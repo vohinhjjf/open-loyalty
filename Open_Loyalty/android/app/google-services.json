@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "141016718908",
+    "project_id": "open-loyalty-app",
+    "storage_bucket": "open-loyalty-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:141016718908:android:b5bc8d7c19e35f97766d39",
+        "android_client_info": {
+          "package_name": "com.example.open_loyalty"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "141016718908-ctk9qb85l33glkcbdjicg9i7vt4ah7eg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDfE-0DTux-ClyjWsgTyExO4Ic3hwfW0k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "141016718908-ctk9qb85l33glkcbdjicg9i7vt4ah7eg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
