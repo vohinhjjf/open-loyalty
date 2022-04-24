@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 const mPrimaryColor = Color(0xFF7579e7);
 const mSecondPrimaryColor = Color(0xFF2C2C2C);
@@ -22,6 +23,15 @@ const caption1 = 12.0;
 const caption2 = 11.0;
 
 const space_height = 6.0;
+
+TextStyle dayStyle(FontWeight fontWeight) {
+  return TextStyle(color: Colors.black, fontWeight: fontWeight);
+}
+/// Function Format DateTime to String with layout string
+String formatNumber(double value) {
+  final f = new NumberFormat("#,###", "vi_VN");
+  return f.format(value);
+}
 
 class Constants {
   static final OutlineInputBorder border = OutlineInputBorder(

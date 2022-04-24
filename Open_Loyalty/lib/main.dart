@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:open_loyalty/profile_screen.dart';
+import 'package:open_loyalty/view/Dashboard/dashboard_screen.dart';
+import 'package:open_loyalty/view/account_screen/account_screen.dart';
+import 'package:open_loyalty/view/booking_management/MaintenanceBookingManagement.dart';
 import 'Screens/login/login.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'view/card/card_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,6 +25,12 @@ class MyApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: LoginScreen(),
+      routes: {
+        '/home': (context) => ProfileScreen(),
+        '/account': (context) => AccountScreen(),
+        '/maintenance': (context) => MaintenanceBookingManagementScreen(),
+        '/card': (context) => CardScreen(),
+      },
     );
   }
 }

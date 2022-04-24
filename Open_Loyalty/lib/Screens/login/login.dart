@@ -4,7 +4,7 @@ import 'package:open_loyalty/components/background.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../profile_screen.dart';
+import '../../view/Dashboard/dashboard_screen.dart';
 
 
 class HomePage extends StatefulWidget {

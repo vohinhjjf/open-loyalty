@@ -1,10 +1,12 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:open_loyalty/models/maintenance.dart';
 import '../../constant.dart';
-import '../../customer_model.dart';
-import '../../models/carousel_model.dart';
+import '../../models/customer_model.dart';
 import 'package:barcode_widget/barcode_widget.dart';
+import '../account_screen/account_screen.dart';
+import '../booking_management/MaintenanceBookingManagement.dart';
+import '../product/product_screen.dart';
 
 class CardScreen extends StatefulWidget {
   @override
@@ -33,10 +35,10 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
 
+  late AsyncSnapshot<ListMaintenanceModel_1> snapshot;
 
   @override
   Widget build(BuildContext context) {
-    int _current = 0;
 
     List<T> map<T>(List list, Function handler) {
       List<T> result = [];
@@ -64,12 +66,8 @@ class _BodyState extends State<Body> {
 
                   builder: (context, AsyncSnapshot<CustomerModel> snapshot) {
                     print(snapshot.connectionState);
-                    if (snapshot.hasData) {
-                      return cardInfo(snapshot.requireData);
-                    } else if (snapshot.hasError) {
-                      return Text(snapshot.error.toString());
-                    }
-                    return Center(child: CircularProgressIndicator());
+                    return cardInfo();
+
                   }),
             ),
             Padding(
@@ -77,7 +75,7 @@ class _BodyState extends State<Body> {
               child: Text(
                 "Danh mục dịch vụ",
                 style: TextStyle(
-                    fontSize: mFontSize,
+                    fontSize: mFontTitle,
                     color: Colors.black,
                     fontWeight: FontWeight.w700),
               ),
@@ -91,7 +89,7 @@ class _BodyState extends State<Body> {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          /*onTap: () {
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -100,7 +98,7 @@ class _BodyState extends State<Body> {
                                 },
                               ),
                             );
-                          },*/
+                          },
                           child: Container(
                             margin: EdgeInsets.only(right: 8),
                             padding: EdgeInsets.only(left: 16),
@@ -112,11 +110,11 @@ class _BodyState extends State<Body> {
                                 Border.all(color: mPrimaryColor, width: 1)),
                             child: Row(
                               children: <Widget>[
-                                Icon(Icons.calendar_view_day_outlined),
+                                Icon(Icons.shopping_basket_outlined),
                                 Padding(
                                     padding: EdgeInsets.only(left: 16),
                                     child: Text(
-                                      "Đặt lịch",
+                                      "Sản phẩm",
                                       style: Constants.titleService,
                                     ))
                               ],
@@ -126,16 +124,9 @@ class _BodyState extends State<Body> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          /*onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) {
-                                  return StartConverstionScreen();
-                                },
-                              ),
-                            );
-                          },*/
+                          onTap: () {
+
+                          },
                           child: Container(
                             margin: EdgeInsets.only(right: 8),
                             padding: EdgeInsets.only(left: 16),
@@ -191,7 +182,6 @@ class _BodyState extends State<Body> {
                               children: <Widget>[
                                 Icon(
                                   Icons.card_giftcard,
-                                  size: 18,
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(left: 16),
@@ -229,7 +219,6 @@ class _BodyState extends State<Body> {
                               children: <Widget>[
                                 Icon(
                                   Icons.store,
-                                  size: 18,
                                 ),
                                 Padding(
                                     padding: EdgeInsets.only(left: 16),
@@ -252,30 +241,12 @@ class _BodyState extends State<Body> {
               child: Text(
                 "Khuyến mãi hấp dẫn 🎉",
                 style: TextStyle(
-                    fontSize: mFontSize,
+                    fontSize: mFontTitle,
                     color: Colors.black,
                     fontWeight: FontWeight.w700),
               ),
             ),
-             /*Row(
-               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-               children: [
-                 Row(
-                   children: map<Widget>(carousels, (index, image) {
-                     return Container(
-                       alignment: Alignment.centerLeft,
-                       height: 6,
-                       width: 6,
-                       margin: EdgeInsets.only(right: 8),
-                       decoration: BoxDecoration(
-                           shape: BoxShape.circle,
-                           color:
-                               _current == index ? mPrimaryColor : Colors.blue),
-                     );
-                   }),
-                 )
-               ],
-             ),*/
+
             Container(
                 alignment: Alignment.centerLeft,
                 margin: EdgeInsets.only(left: 16, right: 16, top: 14),
@@ -335,8 +306,8 @@ class _BodyState extends State<Body> {
     );
   }
 
-  Widget cardInfo(CustomerModel customer) {
-    var _fullName = customer.lastName + " " + customer.firstName;
+  Widget cardInfo() {
+    var _fullName = "Nguyễn Minh Thái";
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
@@ -375,7 +346,7 @@ class _BodyState extends State<Body> {
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    customer.loyaltyCardNumber,
+                    "123456789",
                     style: TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -400,7 +371,7 @@ class _BodyState extends State<Body> {
             padding: EdgeInsets.only(left: 25),
             child: BarcodeWidget(
               barcode: Barcode.code128(), // Barcode type and settings
-              data: customer.loyaltyCardNumber, // Content
+              data: "123456789", // Content
               width: 200,
               height: 60,
               color: Colors.white,
