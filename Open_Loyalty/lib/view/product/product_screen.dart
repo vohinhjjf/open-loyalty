@@ -2,12 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:open_loyalty/constant.dart';
 import 'package:open_loyalty/view/product/components/body.dart';
 
+import '../../models/product_model.dart';
+
 class ProductScreen extends StatefulWidget {
   @override
   _ProductScreenState createState() => _ProductScreenState();
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+
+  @override
+  initState() {
+    super.initState();
+    for (int i = 0; i < products.length; i++) {
+        addProduct(i);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -48,9 +48,13 @@ dependencies:
   chips_choice: ^2.0.1
   intl: ^0.17.0
   table_calendar: ^2.3.3
+  image_picker: ^0.8.5
+  flutter_easyloading: ^3.0.3
   # Firebase dependencies
-  firebase_core: ^1.15.0
-  firebase_auth: ^3.3.15
+  firebase_core: ^1.16.0
+  firebase_auth: ^3.3.17
+  firebase_database: ^9.0.13
+  cloud_firestore: ^3.1.14
 
 dev_dependencies:
   flutter_test:

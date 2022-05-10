@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:open_loyalty/models/maintenance.dart';
+import '../../Firebase/user_data.dart';
 import '../../constant.dart';
-import '../../models/customer_model.dart';
 import 'package:barcode_widget/barcode_widget.dart';
-import '../account_screen/account_screen.dart';
-import '../booking_management/MaintenanceBookingManagement.dart';
 import '../product/product_screen.dart';
 
 class CardScreen extends StatefulWidget {
@@ -16,7 +14,6 @@ class CardScreen extends StatefulWidget {
 class _CardScreenState extends State<CardScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -34,19 +31,17 @@ class Body extends StatefulWidget {
 }
 
 class _BodyState extends State<Body> {
-
   late AsyncSnapshot<ListMaintenanceModel_1> snapshot;
 
+  late Future<UserData?> _value;
+  late UserData userData = new UserData(id: '', name: '', phone: '', email: '', birthday: '', sex: '', location: '', cmd: '', nationality: '', loyaltyCardNumber: '');
+  @override
+  initState() {
+    super.initState();
+    _value = userData.getUser();
+  }
   @override
   Widget build(BuildContext context) {
-
-    List<T> map<T>(List list, Function handler) {
-      List<T> result = [];
-      for (var i = 0; i < list.length; i++) {
-        result.add(handler(i, list[i]));
-      }
-      return result;
-    }
 
     return SingleChildScrollView(
       child: Column(
@@ -54,23 +49,27 @@ class _BodyState extends State<Body> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: mPrimaryColor,
                 borderRadius: BorderRadius.all(Radius.circular(28) //
-                ),
+                    ),
               ),
               width: 344,
               height: 199,
-              margin: EdgeInsets.all(10.0),
-              child: StreamBuilder<CustomerModel>(
-
-                  builder: (context, AsyncSnapshot<CustomerModel> snapshot) {
-                    print(snapshot.connectionState);
-                    return cardInfo();
-
-                  }),
+              margin: const EdgeInsets.all(10.0),
+              child: FutureBuilder<UserData?>(
+                  future: _value,
+                  builder: (context, AsyncSnapshot<UserData?> snapshot) {
+                print(snapshot.connectionState);
+                if (snapshot.hasData) {
+                  return cardInfo(snapshot.data);
+                } else if (snapshot.hasError) {
+                  return Text(snapshot.error.toString());
+                }
+                return Center(child: CircularProgressIndicator());
+              }),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 16, top: 14),
               child: Text(
                 "Danh mục dịch vụ",
@@ -82,7 +81,7 @@ class _BodyState extends State<Body> {
             ),
             Container(
               height: 144,
-              margin: EdgeInsets.only(left: 16, right: 16, top: 10),
+              margin: const EdgeInsets.only(left: 16, right: 16, top: 10),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -100,17 +99,17 @@ class _BodyState extends State<Body> {
                             );
                           },
                           child: Container(
-                            margin: EdgeInsets.only(right: 8),
-                            padding: EdgeInsets.only(left: 16),
+                            margin: const EdgeInsets.only(right: 8),
+                            padding: const EdgeInsets.only(left: 16),
                             height: 64,
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
                                 border:
-                                Border.all(color: mPrimaryColor, width: 1)),
+                                    Border.all(color: mPrimaryColor, width: 1)),
                             child: Row(
                               children: <Widget>[
-                                Icon(Icons.shopping_basket_outlined),
+                                const Icon(Icons.shopping_basket_outlined),
                                 Padding(
                                     padding: EdgeInsets.only(left: 16),
                                     child: Text(
@@ -124,23 +123,21 @@ class _BodyState extends State<Body> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
-
-                          },
+                          onTap: () {},
                           child: Container(
-                            margin: EdgeInsets.only(right: 8),
-                            padding: EdgeInsets.only(left: 16),
+                            margin: const EdgeInsets.only(right: 8),
+                            padding: const EdgeInsets.only(left: 16),
                             height: 64,
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
                                 border:
-                                Border.all(color: mPrimaryColor, width: 1)),
+                                    Border.all(color: mPrimaryColor, width: 1)),
                             child: Row(
                               children: <Widget>[
-                                Icon(Icons.support_agent_outlined),
+                                const Icon(Icons.support_agent_outlined),
                                 Padding(
-                                    padding: EdgeInsets.only(left: 16),
+                                    padding: const EdgeInsets.only(left: 16),
                                     child: Text(
                                       "Hỗ trợ",
                                       style: Constants.titleService,
@@ -152,7 +149,7 @@ class _BodyState extends State<Body> {
                       )
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   Row(
@@ -170,17 +167,17 @@ class _BodyState extends State<Body> {
                             );
                           },*/
                           child: Container(
-                            margin: EdgeInsets.only(right: 8),
-                            padding: EdgeInsets.only(left: 16),
+                            margin: const EdgeInsets.only(right: 8),
+                            padding: const EdgeInsets.only(left: 16),
                             height: 64,
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
                                 border:
-                                Border.all(color: mPrimaryColor, width: 1)),
+                                    Border.all(color: mPrimaryColor, width: 1)),
                             child: Row(
                               children: <Widget>[
-                                Icon(
+                                const Icon(
                                   Icons.card_giftcard,
                                 ),
                                 Padding(
@@ -207,17 +204,17 @@ class _BodyState extends State<Body> {
                             );
                           },*/
                           child: Container(
-                            margin: EdgeInsets.only(right: 8),
-                            padding: EdgeInsets.only(left: 18),
+                            margin: const EdgeInsets.only(right: 8),
+                            padding: const EdgeInsets.only(left: 18),
                             height: 64,
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(12),
                                 border:
-                                Border.all(color: mPrimaryColor, width: 1)),
+                                    Border.all(color: mPrimaryColor, width: 1)),
                             child: Row(
                               children: <Widget>[
-                                Icon(
+                                const Icon(
                                   Icons.store,
                                 ),
                                 Padding(
@@ -236,7 +233,7 @@ class _BodyState extends State<Body> {
                 ],
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 16, top: 18),
               child: Text(
                 "Khuyến mãi hấp dẫn 🎉",
@@ -246,68 +243,68 @@ class _BodyState extends State<Body> {
                     fontWeight: FontWeight.w700),
               ),
             ),
-
             Container(
                 alignment: Alignment.centerLeft,
-                margin: EdgeInsets.only(left: 16, right: 16, top: 14),
+                margin: const EdgeInsets.only(left: 16, right: 16, top: 14),
                 width: MediaQuery.of(context).size.width,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
+                    SizedBox(
                       width: MediaQuery.of(context).size.width,
                       height: 190,
                       // ignore: missing_required_param
                       child: CarouselSlider(
-
-                          items: [
+                        items: [
                           Container(
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(8),
-                                image: DecorationImage(
-                                    image: AssetImage("assets/images/carousel1.jpg"),
+                                image: const DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/carousel1.jpg"),
                                     fit: BoxFit.cover)),
                           ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: DecorationImage(
-                                      image: AssetImage("assets/images/carousel2.jpg"),
-                                      fit: BoxFit.cover)),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8),
-                                  image: DecorationImage(
-                                      image: AssetImage("assets/images/carousel3.jpg"),
-                                      fit: BoxFit.cover)),
-                            )
-                          ],
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: const DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/carousel2.jpg"),
+                                    fit: BoxFit.cover)),
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(8),
+                                image: const DecorationImage(
+                                    image: AssetImage(
+                                        "assets/images/carousel3.jpg"),
+                                    fit: BoxFit.cover)),
+                          )
+                        ],
                         options: CarouselOptions(
-                        height: 180.0,
-                        enlargeCenterPage: true,
-                        autoPlay: true,
-                        aspectRatio: 16 / 9,
-                        autoPlayCurve: Curves.fastOutSlowIn,
-                        enableInfiniteScroll: true,
-                        autoPlayAnimationDuration: Duration(milliseconds: 800),
-                        viewportFraction: 0.8,
-                      ),
-
+                          height: 180.0,
+                          enlargeCenterPage: true,
+                          autoPlay: true,
+                          aspectRatio: 16 / 9,
+                          autoPlayCurve: Curves.fastOutSlowIn,
+                          enableInfiniteScroll: true,
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 800),
+                          viewportFraction: 0.8,
+                        ),
                       ),
                     ),
                   ],
                 )),
-            SizedBox(
+            const SizedBox(
               height: 18,
             ),
           ]),
     );
   }
 
-  Widget cardInfo() {
-    var _fullName = "Nguyễn Minh Thái";
+  Widget cardInfo(UserData? userData) {
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
@@ -319,7 +316,7 @@ class _BodyState extends State<Body> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "Tên khách hàng",
                     style: TextStyle(
                         fontSize: 14,
@@ -327,8 +324,8 @@ class _BodyState extends State<Body> {
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    _fullName,
-                    style: TextStyle(
+                    userData!.name,
+                    style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.w700),
@@ -338,7 +335,7 @@ class _BodyState extends State<Body> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     "ID",
                     style: TextStyle(
                         fontSize: 14,
@@ -346,8 +343,8 @@ class _BodyState extends State<Body> {
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    "123456789",
-                    style: TextStyle(
+                    userData.loyaltyCardNumber,
+                    style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.w700),
@@ -371,7 +368,7 @@ class _BodyState extends State<Body> {
             padding: EdgeInsets.only(left: 25),
             child: BarcodeWidget(
               barcode: Barcode.code128(), // Barcode type and settings
-              data: "123456789", // Content
+              data: userData.loyaltyCardNumber, // Content
               width: 200,
               height: 60,
               color: Colors.white,

@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:open_loyalty/constant.dart';
+
+import 'replace_user.dart';
 
 class ActionButton extends StatefulWidget {
   @override
@@ -7,10 +10,11 @@ class ActionButton extends StatefulWidget {
 }
 
 class _ActionButtonState extends State<ActionButton> {
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       color: mSecondaryColor,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -24,7 +28,10 @@ class _ActionButtonState extends State<ActionButton> {
             child: Text('Sửa thông tin',
                 style: TextStyle(
                     fontSize: mFontSize, fontWeight: FontWeight.w400)),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => Repair_user()));
+            },
           ),
           RaisedButton(
             shape: RoundedRectangleBorder(

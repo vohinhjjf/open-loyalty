@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -47,6 +49,7 @@ class _BodyState extends State<Body> {
       ListMaintenanceModel_1 maintenanceBookModel =
       await _repository.fetchCustomerMaintenanceBooking();
       _maintenanceBookFetcher.sink.add(maintenanceBookModel);
+      print(maintenanceBookModel.total);
     }
   }
   @override
@@ -74,8 +77,8 @@ class _BodyState extends State<Body> {
               color: mPrimaryColor,
               size: subhead,
             ),
-            onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
-                '/home', (Route<dynamic> route) => false)),
+            onPressed: () => Navigator.pop(context),
+        ),
         backgroundColor: Colors.white,
         centerTitle: true,
         title: Text(
@@ -342,63 +345,67 @@ class Repository {
 
 class CustomerApiProvider {
   Future<ListMaintenanceModel_1> fetchCustomerMaintenanceBooking() async {
-    //get value store in SharedPreferences.
+    //get value store in FirebaseFireStore.
+    final User? user = FirebaseAuth.instance.currentUser;
+    var maintenance = FirebaseFirestore.instance.collection('Maintenance');
+    var docSnapshot = await maintenance.doc(user?.uid).get();
     MaintenanceModel_1 trans1 = MaintenanceModel_1();
     List<MaintenanceModel_1> temp = [];
-    trans1.maintenanceId = "1";
-    trans1.productSku = "laptop";
-    trans1.bookingDate = DateTime.parse('1969-07-20 20:18:04Z').toLocal();
-    trans1.bookingTime = "20:00";
-    trans1.warrantyCenter = "có";
-    trans1.createdAt = DateTime.parse('2022-04-24 13:32:04Z');
-    trans1.active = true;
-    trans1.discription = "12345";
-    trans1.cost = "100000";
-    trans1.paymentStatus = "paid";
-    temp.add(trans1);
-    MaintenanceModel_1 trans2 = MaintenanceModel_1();
-    trans2.maintenanceId = "2";
-    trans2.productSku = "Tablet";
-    trans2.bookingDate = DateTime.parse('2020-07-20 20:18:04Z').toLocal();
-    trans2.bookingTime = "20:00";
-    trans2.warrantyCenter = "có";
-    trans2.createdAt = DateTime.parse('2022-04-23 20:32:04Z');
-    trans2.active = true;
-    trans2.discription = "6789";
-    trans2.cost = "500000";
-    trans2.paymentStatus = "paid";
-    temp.add(trans2);
-    print(temp.iterator);
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      var length = data.length;
+      for(int i =0; i< length; i++) {
+        print(i);
+        trans1.maintenanceId = "$i";
+        trans1.productSku = data['maintenance $i']['maintenanceData']['productSku'];
+        trans1.bookingDate =
+            DateTime.parse(data['maintenance $i']['maintenanceData']['bookingDate'])
+                .toLocal();
+        trans1.bookingTime = data['maintenance $i']['maintenanceData']['bookingTime'];
+        trans1.warrantyCenter =
+        data['maintenance $i']['maintenanceData']['warrantyCenter'];
+        trans1.createdAt =
+            DateTime.parse(data['maintenance $i']['maintenanceData']['createdAt']);
+        trans1.active = data['maintenance $i']['maintenanceData']['active'];
+        trans1.discription = data['maintenance $i']['maintenanceData']['description'];
+        trans1.cost = data['maintenance $i']['maintenanceData']['cost'];
+        trans1.paymentStatus =
+        data['maintenance $i']['maintenanceData']['paymentStatus'];
+        temp.add(trans1);
+      }
+    }
     return ListMaintenanceModel_1(maintenanceModels: temp, total: temp.length);
   }
   Future<ListWarrantyModel> fetchCustomerWarrantyBooking() async {
-
+    //get value store in FirebaseFireStore.
+    final User? user = FirebaseAuth.instance.currentUser;
+    var warranty = FirebaseFirestore.instance.collection('Warranty');
+    var docSnapshot = await warranty.doc(user?.uid).get();
     WarrantyModel trans1 = WarrantyModel();
     List<WarrantyModel> temp = [];
-    trans1.maintenanceId = "1";
-    trans1.productSku = "Iphone 13 Pro Max";
-    trans1.bookingDate = DateTime.parse('2021-07-20 20:18:04Z').toLocal();
-    trans1.bookingTime = "10:00";
-    trans1.warrantyCenter = "không";
-    trans1.createdAt = DateTime.parse('2022-04-24 13:32:04Z');
-    trans1.active = true;
-    trans1.discription = "12345";
-    trans1.cost = "12.000.000";
-    trans1.paymentStatus = "paid";
-    temp.add(trans1);
-    WarrantyModel trans2 = WarrantyModel();
-    trans2.maintenanceId = "2";
-    trans2.productSku = "Samsung galaxy A23";
-    trans2.bookingDate = DateTime.parse('2020-07-20 20:18:04Z').toLocal();
-    trans2.bookingTime = "20:00";
-    trans2.warrantyCenter = "có";
-    trans2.createdAt = DateTime.parse('2022-04-23 20:32:04Z');
-    trans2.active = true;
-    trans2.discription = "6789";
-    trans2.cost = "500000";
-    trans2.paymentStatus = "paid";
-    temp.add(trans2);
-    print(temp.iterator);
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      var length = data.length;
+      for(int i = 0; i< length; i++) {
+        print(i);
+        trans1.maintenanceId = "$i";
+        trans1.productSku = data['warranty $i']['warrantyData']['productSku'];
+        trans1.bookingDate =
+            DateTime.parse(data['warranty $i']['warrantyData']['bookingDate'])
+                .toLocal();
+        trans1.bookingTime = data['warranty $i']['warrantyData']['bookingTime'];
+        trans1.warrantyCenter =
+        data['warranty $i']['warrantyData']['warrantyCenter'];
+        trans1.createdAt =
+            DateTime.parse(data['warranty $i']['warrantyData']['createdAt']);
+        trans1.active = data['warranty $i']['warrantyData']['active'];
+        trans1.discription = data['warranty $i']['warrantyData']['description'];
+        trans1.cost = data['warranty $i']['warrantyData']['cost'];
+        trans1.paymentStatus =
+        data['warranty $i']['warrantyData']['paymentStatus'];
+        temp.add(trans1);
+      }
+    }
     return ListWarrantyModel(warrantyModels: temp, total: temp.length);
 
   }

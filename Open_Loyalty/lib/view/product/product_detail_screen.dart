@@ -238,6 +238,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     fontSize: body,
                                     fontWeight: FontWeight.w500)),
                             onPressed: () {
+                              print(widget.product.warrantyId);
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:open_loyalty/constant.dart';
 import 'package:open_loyalty/models/product_model.dart';
+import 'package:open_loyalty/view/Schedule_Warranty/components/booking_confirm.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class WarrantyScreen extends StatefulWidget {
@@ -124,7 +125,7 @@ class _BodyState extends State<Body> {
                             style: TextStyle(
                                 fontSize: body, fontWeight: FontWeight.w500)),
                         onPressed: () {
-                          /*Navigator.push(
+                          Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) {
@@ -136,7 +137,7 @@ class _BodyState extends State<Body> {
                                 );
                               },
                             ),
-                          );*/
+                          );
                         },
                       ),
                     ),

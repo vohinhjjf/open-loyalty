@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:open_loyalty/Firebase/data_form.dart';
 import 'package:open_loyalty/Screens/register/register.dart';
 import 'package:open_loyalty/components/background.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../Firebase/user_data.dart';
 import '../../view/Dashboard/dashboard_screen.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -15,27 +15,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State {
-
   //login function
-  static Future loginUsingEmailPassword({required String email, required String password, required BuildContext context}) async{
+  static Future loginUsingEmailPassword(
+      {required String email,
+      required String password,
+      required BuildContext context}) async {
     FirebaseAuth auth = FirebaseAuth.instance;
+
     User? user;
     try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(email: email, password: password);
+      UserCredential userCredential = await auth.signInWithEmailAndPassword(
+          email: email, password: password);
       user = userCredential.user;
-    } on FirebaseException catch(e){
-      if(e.code == 'user-not-found'){
+    } on FirebaseException catch (e) {
+      if (e.code == 'user-not-found') {
         print('No user found for that email');
-
       }
-
     }
     return user;
   }
+
   bool _showPassword = true;
   @override
   Widget build(BuildContext context) {
-
     Size size = MediaQuery.of(context).size;
 
     String email = "";
@@ -48,131 +50,125 @@ class _HomePageState extends State {
           children: <Widget>[
             Container(
               alignment: Alignment.centerLeft,
-              padding: EdgeInsets.symmetric(horizontal: 40),
-              child: Text(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: const Text(
                 "LOGIN",
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF2661FA),
-                    fontSize: 36
-                ),
+                    fontSize: 36),
                 textAlign: TextAlign.left,
               ),
             ),
-
             SizedBox(height: size.height * 0.03),
-
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: 40),
+              margin: const EdgeInsets.symmetric(horizontal: 40),
               child: TextField(
-                onChanged: (value){
-                  email=value;
+                onChanged: (value) {
+                  email = value;
                 },
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                    hintText: "Email",
-                    prefixIcon: Icon(Icons.email, color: Colors.orange,),
+                decoration: const InputDecoration(
+                  hintText: "Email",
+                  prefixIcon: Icon(
+                    Icons.email,
+                    color: Colors.orange,
+                  ),
                 ),
               ),
             ),
-
             SizedBox(height: size.height * 0.03),
-
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.symmetric(horizontal: 40),
+              margin: const EdgeInsets.symmetric(horizontal: 40),
               child: TextField(
                 // controller: _passwordController,
-                onChanged: (value){
-                  password= value;
+                onChanged: (value) {
+                  password = value;
                 },
                 obscureText: _showPassword,
                 decoration: InputDecoration(
-                    labelText: "Password",
-                    prefixIcon: Icon(Icons.lock, color: Colors.orange,),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _showPassword = !_showPassword;
-                        });
-                      },
-                      icon: Icon(
-                        !_showPassword ? Icons.visibility : Icons
-                            .visibility_off, color: Colors.orange,),
+                  labelText: "Password",
+                  prefixIcon: const Icon(
+                    Icons.lock,
+                    color: Colors.orange,
+                  ),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        _showPassword = !_showPassword;
+                      });
+                    },
+                    icon: Icon(
+                      !_showPassword ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.orange,
                     ),
+                  ),
                 ),
               ),
             ),
             Container(
               alignment: Alignment.centerRight,
-              margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-              child: Text(
+              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+              child: const Text(
                 "Forgot your password?",
-                style: TextStyle(
-                    fontSize: 12,
-                    color: Color(0XFF2661FA)
-                ),
+                style: TextStyle(fontSize: 12, color: Color(0XFF2661FA)),
               ),
             ),
-
             SizedBox(height: size.height * 0.05),
-
             Container(
               alignment: Alignment.centerRight,
-              margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: RaisedButton(
-                onPressed: () async{
+                onPressed: () async {
                   print(email);
                   print(password);
                   //Let's test the app
-                  User? user = await loginUsingEmailPassword(email: email, password: password, context: context);
-                  if(user != null){
-                    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => ProfileScreen() ));
+                  User? user = await loginUsingEmailPassword(
+                      email: email, password: password, context: context);
+                  if (user != null) {
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => ProfileScreen()));
                   }
                 },
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(80.0)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(80.0)),
                 textColor: Colors.white,
                 padding: const EdgeInsets.all(0),
                 child: Container(
                   alignment: Alignment.center,
                   height: 50.0,
                   width: size.width * 0.5,
-                  decoration: new BoxDecoration(
+                  decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(80.0),
-                      gradient: new LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 255, 136, 34),
-                            Color.fromARGB(255, 255, 177, 41)
-                          ]
-                      )
-                  ),
+                      gradient: const LinearGradient(colors: [
+                        Color.fromARGB(255, 255, 136, 34),
+                        Color.fromARGB(255, 255, 177, 41)
+                      ])),
                   padding: const EdgeInsets.all(0),
-                  child: Text(
+                  child: const Text(
                     "LOGIN",
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold
-                    ),
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
             ),
-
             Container(
               alignment: Alignment.centerRight,
-              margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: GestureDetector(
                 onTap: () => {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => RegisterScreen()))
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => RegisterScreen()))
                 },
-                child: Text(
+                child: const Text(
                   "Don't Have an Account? Sign up",
                   style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF2661FA)
-                  ),
+                      color: Color(0xFF2661FA)),
                 ),
               ),
             )
@@ -181,5 +177,4 @@ class _HomePageState extends State {
       ),
     );
   }
-
 }

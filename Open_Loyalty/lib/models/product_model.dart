@@ -1,3 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class ProductModel {
   late String productSku;
   late String productName;
@@ -21,10 +24,33 @@ class ProductModel {
     store = item["store"];
   }
 }
-
+Object addProduct(int i) {
+  FirebaseAuth auth = FirebaseAuth.instance;
+  final User? user = auth.currentUser;
+  var id = user?.uid;
+  var product = FirebaseFirestore.instance.collection('Products').doc('$id');
+  // Call the user's CollectionReference to add a new user
+  for (int i = 0; i < products.length; i++) {
+     product.update({
+      'product $i': {
+        'productSku': productData[i]["productSku"],
+        'productName': productData[i]["productName"],
+        'brand': productData[i]["brand"],
+        'price': productData[i]["price"],
+        'warrantyId': productData[i]["warrantyId"],
+        'purchaseDate': productData[i]["purchaseDate"],
+        'warrantyExpired': productData[i]["warrantyExpired"],
+        'image': productData[i]["image"],
+        'store': productData[i]["store"],
+      }
+    })
+        .then((value) => print("Product Added"))
+        .catchError((error) => print("Failed to add user: $error"));
+  }
+  return 'null';
+}
 List<ProductModel> products =
     productData.map((item) => ProductModel(item)).toList();
-
 var productData = [
   {
     "productSku": "FW1231",

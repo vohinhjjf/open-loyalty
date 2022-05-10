@@ -9,7 +9,6 @@ import 'package:open_loyalty/view/account_screen/account_screen.dart';
 import 'package:open_loyalty/view/booking_management/MaintenanceBookingManagement.dart';
 import 'package:rxdart/rxdart.dart';
 
-
 class WarrantyBookingManagement extends StatefulWidget {
   @override
   _WarrantyBookingManagementState createState() =>
@@ -26,7 +25,7 @@ class _WarrantyBookingManagementState extends State<WarrantyBookingManagement> {
     if (!_warrantyBookFetcher.isClosed) {
       print("fetch points");
       ListWarrantyModel warrantyBookModel =
-      await _repository.fetchCustomerWarrantyBooking();
+          await _repository.fetchCustomerWarrantyBooking();
       _warrantyBookFetcher.sink.add(warrantyBookModel);
     }
   }
@@ -54,12 +53,13 @@ class _WarrantyBookingManagementState extends State<WarrantyBookingManagement> {
         appBar: AppBar(
           elevation: 0,
           leading: IconButton(
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: mPrimaryColor,
-                size: subhead,
-              ),
-              onPressed: () => Navigator.push(context,MaterialPageRoute(builder: (context) {return AccountScreen();},),),),
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: mPrimaryColor,
+              size: subhead,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
           backgroundColor: Colors.white,
           centerTitle: true,
           title: Text(
