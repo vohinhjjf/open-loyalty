@@ -44,12 +44,14 @@ dependencies:
   sign_in_button: ^3.0.0
   rxdart: ^0.27.3
   shared_preferences: ^2.0.13
-  barcode_widget: ^2.0.2
+  barcode_widget: ^2.0.0
   chips_choice: ^2.0.1
   intl: ^0.17.0
   table_calendar: ^2.3.3
   image_picker: ^0.8.5
   flutter_easyloading: ^3.0.3
+  percent_indicator: ^4.0.1
+  qr_flutter: ^4.0.0
   # Firebase dependencies
   firebase_core: ^1.16.0
   firebase_auth: ^3.3.17

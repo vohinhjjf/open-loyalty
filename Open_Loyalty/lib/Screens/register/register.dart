@@ -3,6 +3,7 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:open_loyalty/Firebase/respository.dart';
 import 'package:open_loyalty/components/background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../main.dart';
@@ -14,16 +15,15 @@ class RegisterScreen extends StatelessWidget {
   late DocumentSnapshot snapshot;
   bool loading = false;
   late String screen;
+  var name = TextEditingController();
+  var phone = TextEditingController();
+  var email = TextEditingController();
+  var password = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
-    String id = "";
-    String name = '';
-    late String email = "";
-    late String password = "";
-    String phone = "";
+    final _repository = Repository();
 
     return Scaffold(
       body: Background(
@@ -47,9 +47,7 @@ class RegisterScreen extends StatelessWidget {
               alignment: Alignment.center,
               margin: const EdgeInsets.symmetric(horizontal: 40),
               child: TextField(
-                onChanged: (value) {
-                  name = value;
-                },
+                controller: name,
                 decoration: const InputDecoration(
                     labelText: "Name",
                     prefixIcon: Icon(
@@ -63,9 +61,7 @@ class RegisterScreen extends StatelessWidget {
               alignment: Alignment.center,
               margin: const EdgeInsets.symmetric(horizontal: 40),
               child: TextField(
-                onChanged: (value) {
-                  phone = value;
-                },
+                controller: phone,
                 decoration: const InputDecoration(
                     labelText: "Mobile Number",
                     prefixIcon: Icon(
@@ -80,9 +76,7 @@ class RegisterScreen extends StatelessWidget {
               margin: const EdgeInsets.symmetric(horizontal: 40),
               child: TextFormField(
                 keyboardType: TextInputType.emailAddress,
-                onChanged: (value1) {
-                  email = value1;
-                },
+                controller: email,
                 decoration: InputDecoration(
                   labelText: "Email",
                   prefixIcon: Icon(
@@ -103,9 +97,7 @@ class RegisterScreen extends StatelessWidget {
                   }
                   return null;
                 },
-                onChanged: (value) {
-                  password = value;
-                },
+                controller: password,
                 decoration: InputDecoration(
                     labelText: "Password",
                     prefixIcon: Icon(
@@ -121,12 +113,12 @@ class RegisterScreen extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: 40, vertical: 10),
               child: RaisedButton(
                 onPressed: () async {
-                  print(email);
-                  print(password);
+                  print(email.text);
+                  print(password.text);
                   try {
                     final newUser = await _auth.createUserWithEmailAndPassword(
-                        email: email, password: password);
-                    addUser(newUser.user!.uid, name, phone, email);
+                        email: email.text, password: password.text);
+                    _repository.addCustomerData(users , newUser.user!.uid, name.text, phone.text, email.text, randomNumber());
                     if (newUser != null) {
                       Navigator.push(
                         context,
@@ -185,26 +177,6 @@ class RegisterScreen extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<void> addUser(String id, String name, String phone, String email) {
-    // Call the user's CollectionReference to add a new user
-    return users
-        .doc(id)
-        .set({
-          'id': id,
-          'loyaltyCardNumber': randomNumber(),
-          'email': email,
-          'name': name,
-          'sex': "sex",
-          'birthday': "birthday",
-          'nationality': "VIETNAM",
-          'cmd': "",
-          'number': phone,
-          'location': "",
-        })
-        .then((value) => print("User Added"))
-        .catchError((error) => print("Failed to add user: $error"));
   }
 
   String randomNumber() {

@@ -1,13 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:open_loyalty/models/maintenance.dart';
+import 'package:open_loyalty/Firebase/respository.dart';
 import 'package:open_loyalty/view/account_screen/account_screen.dart';
+import 'package:open_loyalty/view/campaign/components/coupon_bloc.dart';
 import 'package:open_loyalty/view/card/card_screen.dart';
+import 'package:open_loyalty/view/points/point_screen.dart';
 import 'package:open_loyalty/view/transaction/transaction_screen.dart';
-import 'package:table_calendar/table_calendar.dart';
-import '../../Firebase/user_data.dart';
 import '../../constant.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -17,7 +15,7 @@ class ProfileScreen extends StatefulWidget {
 }
 
 AppBar homeAppBar(BuildContext context) {
-
+  Repository _repository = Repository();
   return AppBar(
     backgroundColor: Colors.white,
     elevation: 0,
@@ -31,6 +29,7 @@ AppBar homeAppBar(BuildContext context) {
       IconButton(
         icon: SvgPicture.asset("assets/icons/bell.svg"),
         onPressed: () {
+          print("click");
         },
       ),
     ],
@@ -38,7 +37,6 @@ AppBar homeAppBar(BuildContext context) {
 }
 
 class _ProfileScreenState extends State {
-
   int _selectedIndex = 0;
 
   @override
@@ -60,7 +58,7 @@ class _ProfileScreenState extends State {
   final List<Widget> _widgetOptions = <Widget>[
     CardScreen(),
     TransactionScreen(),
-    TransactionScreen(),
+    PointScreen(),
     AccountScreen()
   ];
   @override

@@ -1,34 +1,33 @@
 import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:open_loyalty/Firebase/user_data.dart';
+import 'package:open_loyalty/Firebase/respository.dart';
 import 'package:open_loyalty/constant.dart';
+import 'package:open_loyalty/models/customer_model.dart';
 
 class DetailInfo extends StatefulWidget {
   @override
   _DetailInfoState createState() => _DetailInfoState();
 }
 class _DetailInfoState extends State<DetailInfo> {
-  late Future<UserData?> _value;
-  late UserData userData = new UserData(id: '', name: '', phone: '', email: '', birthday: '', sex: '', location: '', cmd: '', nationality: '', loyaltyCardNumber: '');
+  late Future<CustomerModel?> _value;
+  final _repository = Repository();
+  
   @override
   initState() {
     super.initState();
-    _value = userData.getUser();
+    _value = _repository.getCustomerData();
   }
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
       child: Center(
-        child: FutureBuilder<UserData?>(
+        child: FutureBuilder<CustomerModel?>(
           future: _value,
           builder: (
               BuildContext context,
-              AsyncSnapshot<UserData?> snapshot,
+              AsyncSnapshot<CustomerModel?> snapshot,
               ) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Column(
@@ -68,7 +67,7 @@ class _DetailInfoState extends State<DetailInfo> {
                         FontAwesomeIcons.venusMars,
                         size: mFontListTile,
                       ),
-                      title: Text('${snapshot.data!.sex}',
+                      title: Text('${snapshot.data!.gender}',
                           style: TextStyle(fontSize: mFontListTile)),
                     ),
                     ListTile(

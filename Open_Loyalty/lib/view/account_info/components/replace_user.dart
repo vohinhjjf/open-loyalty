@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:open_loyalty/Firebase/user_data.dart';
+import 'package:open_loyalty/Firebase/respository.dart';
 import 'package:open_loyalty/constant.dart';
-import 'package:open_loyalty/view/account_info/components/detail_info.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class Repair_user extends StatefulWidget {
@@ -41,7 +40,7 @@ class _BodyState extends State<Body> {
   CalendarFormat format = CalendarFormat.month;
   late CalendarController _calendarController;
   late DateTime _currentDate = DateTime.now();
-  late UserData userData = new UserData(id: '', name: '', phone: '', email: '', birthday: '', sex: '', location: '', cmd: '', nationality: '', loyaltyCardNumber: '');
+  final _repository = Repository();
 
   _showMaterialDialog(BuildContext context) {
     showDialog(
@@ -104,23 +103,25 @@ class _BodyState extends State<Body> {
 
   updateProfile(){
     return FirebaseFirestore.instance.collection('Users').doc(user?.uid).update({
-      'name' : name.text,
-      'sex' : sex.text,
-      'birthday' : birthday.text,
-      'nationality' : nationality.text,
-      'cmd' : cmd.text,
-      'number' : mobile.text,
-      'email' : email.text,
-      'location' : location.text,
+      'information':{
+        'name' : name.text,
+        'sex' : sex.text,
+        'birthday' : birthday.text,
+        'nationality' : nationality.text,
+        'cmd' : cmd.text,
+        'number' : mobile.text,
+        'email' : email.text,
+        'location' : location.text,
+      }
     });
   }
 
   getDataUser(){
-    userData.getUser().then((value) => {
+    _repository.getCustomerData().then((value) => {
     if(mounted){
         setState(() {
           name.text = value!.name;
-          sex.text = value.sex;
+          sex.text = value.gender;
           birthday.text = value.birthday;
           nationality.text = value.nationality;
           cmd.text = value.cmd;

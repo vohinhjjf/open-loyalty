@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:open_loyalty/Firebase/respository.dart';
 
 import 'package:open_loyalty/constant.dart';
 import 'package:open_loyalty/models/product_model.dart';
@@ -20,6 +21,7 @@ class BookingConfirmed extends StatefulWidget {
 }
 
 class _BookingConfirmedState extends State<BookingConfirmed> {
+  final _repository = Repository();
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +79,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                           print('bookingWarranty');
                           if (widget._center != null) {
                             print('thành công');
-                                bookingWarranty(
+                            _repository.bookingWarranty(
                                     widget.product.productSku,
                                     widget._center,
                                     widget._bookingDate,
@@ -95,19 +97,25 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                         } else {
                           if (widget._center != null) {
                             print('booking');
-                            booking(
+                            print(widget.product.productSku);
+                            print(widget._center);
+                            print(widget._bookingDate);
+                            print(widget._time);
+                            _repository.booking(
                                     widget.product.productSku,
                                     widget._center,
                                     widget._bookingDate,
                                     widget._time,
                                     DateTime.now())
                                 .then((value) => {
+                                  print(value),
                                       if (value != null)
                                         {_showMaterialDialog()}
                                       else
                                         {_showErrorDialog()}
                                     });
-                          } else {
+                          }
+                          else {
                             _showErrorDialog();
                           }
                         }

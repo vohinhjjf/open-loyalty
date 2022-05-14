@@ -1,50 +1,30 @@
 class CustomerModel {
-  String customerId;
-  bool active;
-  String firstName;
-  String lastName;
+  String id;
+  String name;
   String gender;
-  String email;
+  String birthday;
+  String nationality;
+  String cmd;
   String phone;
-  String birthDate;
-  String levelId;
+  String email;
   String loyaltyCardNumber;
-  bool agreement1;
-  bool agreement2;
-  bool agreement3;
+  String levelId;
+  String location;
 
-  CustomerModel(
-      {required this.customerId,
-      required this.active,
-      required this.firstName,
-      required this.lastName,
-        required this.birthDate,
-        required this.email,
-        required this.gender,
-        required this.levelId,
-        required this.phone,
-        required this.loyaltyCardNumber,
-        required this.agreement1,
-        required this.agreement2,
-        required this.agreement3});
+  CustomerModel({
+    required this.id,
+    required this.name,
+    required this.gender,
+    required this.birthday,
+    required this.nationality,
+    required this.cmd,
+    required this.phone,
+    required this.email,
+    required this.loyaltyCardNumber,
+    required this.levelId,
+    required this.location,
+  });
 
-  factory CustomerModel.fromJson(Map<String, dynamic> parsedJson) {
-    return CustomerModel(
-      customerId: parsedJson["customerId"],
-      active: parsedJson["active"],
-      firstName: parsedJson["firstName"],
-      lastName: parsedJson["lastName"],
-      gender: parsedJson["gender"],
-      email: parsedJson["email"],
-      phone: parsedJson["phone"],
-      birthDate: parsedJson["birthDate"],
-      levelId: parsedJson["levelId"],
-      loyaltyCardNumber: parsedJson["loyaltyCardNumber"],
-      agreement1: parsedJson["agreement1"],
-      agreement2: parsedJson["agreement2"],
-      agreement3: parsedJson["agreement3"],
-    );
-  }
 }
 
 class CustomerStatusModel {
@@ -121,3 +101,5 @@ class CustomerStatusModel {
     );
   }
 }
+
+

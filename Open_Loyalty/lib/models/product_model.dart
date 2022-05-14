@@ -28,6 +28,7 @@ Object addProduct(int i) {
   FirebaseAuth auth = FirebaseAuth.instance;
   final User? user = auth.currentUser;
   var id = user?.uid;
+
   var product = FirebaseFirestore.instance.collection('Products').doc('$id');
   // Call the user's CollectionReference to add a new user
   for (int i = 0; i < products.length; i++) {
@@ -49,6 +50,7 @@ Object addProduct(int i) {
   }
   return 'null';
 }
+
 List<ProductModel> products =
     productData.map((item) => ProductModel(item)).toList();
 var productData = [

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:open_loyalty/Firebase/respository.dart';
+import 'package:open_loyalty/models/customer_model.dart';
 import 'package:open_loyalty/models/maintenance.dart';
-import '../../Firebase/user_data.dart';
+import 'package:open_loyalty/view/campaign/campaign_screen.dart';
 import '../../constant.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import '../product/product_screen.dart';
@@ -32,13 +34,13 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   late AsyncSnapshot<ListMaintenanceModel_1> snapshot;
+  late Future<CustomerModel?> _value;
+  final _repository = Repository();
 
-  late Future<UserData?> _value;
-  late UserData userData = new UserData(id: '', name: '', phone: '', email: '', birthday: '', sex: '', location: '', cmd: '', nationality: '', loyaltyCardNumber: '');
   @override
   initState() {
     super.initState();
-    _value = userData.getUser();
+    _value = _repository.getCustomerData();
   }
   @override
   Widget build(BuildContext context) {
@@ -57,9 +59,9 @@ class _BodyState extends State<Body> {
               width: 344,
               height: 199,
               margin: const EdgeInsets.all(10.0),
-              child: FutureBuilder<UserData?>(
+              child: FutureBuilder<CustomerModel?>(
                   future: _value,
-                  builder: (context, AsyncSnapshot<UserData?> snapshot) {
+                  builder: (context, AsyncSnapshot<CustomerModel?> snapshot) {
                 print(snapshot.connectionState);
                 if (snapshot.hasData) {
                   return cardInfo(snapshot.data);
@@ -156,7 +158,7 @@ class _BodyState extends State<Body> {
                     children: [
                       Expanded(
                         child: GestureDetector(
-                          /*onTap: () {
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -165,7 +167,7 @@ class _BodyState extends State<Body> {
                                 },
                               ),
                             );
-                          },*/
+                          },
                           child: Container(
                             margin: const EdgeInsets.only(right: 8),
                             padding: const EdgeInsets.only(left: 16),
@@ -304,7 +306,7 @@ class _BodyState extends State<Body> {
     );
   }
 
-  Widget cardInfo(UserData? userData) {
+  Widget cardInfo(CustomerModel? CustomerModel) {
     Size size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
@@ -324,7 +326,7 @@ class _BodyState extends State<Body> {
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    userData!.name,
+                    CustomerModel!.name,
                     style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -343,7 +345,7 @@ class _BodyState extends State<Body> {
                         fontWeight: FontWeight.w400),
                   ),
                   Text(
-                    userData.loyaltyCardNumber,
+                    CustomerModel.loyaltyCardNumber,
                     style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
@@ -368,7 +370,7 @@ class _BodyState extends State<Body> {
             padding: EdgeInsets.only(left: 25),
             child: BarcodeWidget(
               barcode: Barcode.code128(), // Barcode type and settings
-              data: userData.loyaltyCardNumber, // Content
+              data: CustomerModel.loyaltyCardNumber, // Content
               width: 200,
               height: 60,
               color: Colors.white,

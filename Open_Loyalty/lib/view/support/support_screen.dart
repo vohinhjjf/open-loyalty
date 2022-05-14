@@ -292,7 +292,6 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
                       Navigator.pop(context);
                       _showMaterialDialog();
                     });
-
                   },
                 ),
               ),

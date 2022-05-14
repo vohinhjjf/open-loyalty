@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:open_loyalty/Firebase/data_form.dart';
 import 'package:open_loyalty/Screens/register/register.dart';
 import 'package:open_loyalty/components/background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../../Firebase/user_data.dart';
 import '../../view/Dashboard/dashboard_screen.dart';
 
 class HomePage extends StatefulWidget {
