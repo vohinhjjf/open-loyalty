@@ -3,6 +3,7 @@ import 'package:open_loyalty/Screens/register/register.dart';
 import 'package:open_loyalty/components/background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../view/Dashboard/dashboard_screen.dart';
+import '../forget_password/forget_password.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -21,12 +22,28 @@ class _HomePageState extends State {
 
     User? user;
     try {
+      if (email.isEmpty || password.isEmpty) {
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text('Please enter your email and password'),
+              );
+            });
+      }
       UserCredential userCredential = await auth.signInWithEmailAndPassword(
           email: email, password: password);
       user = userCredential.user;
     } on FirebaseException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email');
+        showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                content: Text(e.message.toString()),
+              );
+            });
       }
     }
     return user;
@@ -108,9 +125,17 @@ class _HomePageState extends State {
             Container(
               alignment: Alignment.centerRight,
               margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
-              child: const Text(
-                "Forgot your password?",
-                style: TextStyle(fontSize: 12, color: Color(0XFF2661FA)),
+              child: GestureDetector(
+                onTap: () => {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordScreen()))
+                },
+                child: const Text(
+                  "Forgot your password?",
+                  style: TextStyle(fontSize: 12, color: Color(0XFF2661FA)),
+                ),
               ),
             ),
             SizedBox(height: size.height * 0.05),
