@@ -5,8 +5,8 @@ import 'package:open_loyalty/main.dart';
 import 'package:open_loyalty/view/Schedule_Warranty/WarrantyBookingScreen.dart';
 import 'package:open_loyalty/view/account_info/account_info_screen.dart';
 import 'package:open_loyalty/view/booking_management/MaintenanceBookingManagement.dart';
-import 'package:open_loyalty/view/support/support_screen.dart';
-import 'package:table_calendar/table_calendar.dart';
+
+import '../support_request/support_screen.dart';
 
 class AccountScreen extends StatefulWidget {
 
@@ -154,7 +154,7 @@ class _BodyState extends State<AccountScreen> {
             child: const Text('Cài đặt', style: TextStyle(fontSize: mFontSize)),
           ),
           onTap: () {
-            Navigator.pop(context);
+
           },
         ),
         Divider(),

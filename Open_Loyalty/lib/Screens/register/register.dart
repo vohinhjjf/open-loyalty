@@ -27,7 +27,7 @@ class RegisterScreen extends StatelessWidget {
 
     return Scaffold(
       body: Background(
-        child: new SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[

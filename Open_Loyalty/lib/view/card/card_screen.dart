@@ -7,6 +7,8 @@ import 'package:open_loyalty/view/campaign/campaign_screen.dart';
 import '../../constant.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import '../product/product_screen.dart';
+import '../stores/stores_screen.dart';
+import '../support/start_conversation_screen.dart';
 
 class CardScreen extends StatefulWidget {
   @override
@@ -125,7 +127,16 @@ class _BodyState extends State<Body> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return StartConverstionScreen();
+                                },
+                              ),
+                            );
+                          },
                           child: Container(
                             margin: const EdgeInsets.only(right: 8),
                             padding: const EdgeInsets.only(left: 16),
@@ -195,7 +206,7 @@ class _BodyState extends State<Body> {
                       ),
                       Expanded(
                         child: GestureDetector(
-                          /*onTap: () {
+                          onTap: () {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -204,7 +215,7 @@ class _BodyState extends State<Body> {
                                 },
                               ),
                             );
-                          },*/
+                          },
                           child: Container(
                             margin: const EdgeInsets.only(right: 8),
                             padding: const EdgeInsets.only(left: 18),

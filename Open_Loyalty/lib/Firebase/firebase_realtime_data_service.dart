@@ -2,6 +2,8 @@ import 'dart:core';
 import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:open_loyalty/models/campaign_model.dart';
 import 'package:open_loyalty/models/coupons_model.dart';
@@ -9,6 +11,9 @@ import 'package:open_loyalty/models/customer_model.dart';
 import 'package:open_loyalty/models/maintenance.dart';
 import 'package:open_loyalty/models/point_model.dart';
 import 'package:open_loyalty/models/warranty_model.dart';
+import 'package:open_loyalty/view/point_transfer/p2p_point_transfer.dart';
+
+import '../models/request_support_model.dart';
 
 class CustomerApiProvider {
 
@@ -18,7 +23,8 @@ class CustomerApiProvider {
   var campaign = FirebaseFirestore.instance.collection('Campaigns');
   var warranty = FirebaseFirestore.instance.collection('Warranty');
   var maintenance = FirebaseFirestore.instance.collection('Maintenance');
-
+  var string;
+  //User
   Future<void> addUser(
       CollectionReference users,
       String id,
@@ -30,7 +36,8 @@ class CustomerApiProvider {
     maintenance.doc(id).set({});
     warranty.doc(id).set({});
     FirebaseFirestore.instance.collection('Products').doc(id).set({});
-    point.doc(id).set({});
+    //point.doc(id).set({});
+    setCustomerPointTransfer(10.0, 'newuser', 'adding', id);
     campaign.doc(id).collection("available").add({
       "name": 'Inactive',
       "campaignId": '0'+'23456789',
@@ -70,24 +77,24 @@ class CustomerApiProvider {
       },
       'status':{
         'averageTransactionsAmount':10.0,
-        'currency': 'currency',
-        'expiredPoints': 10.0,
-        'level': 'level',
+        'currency': 'điểm',
+        'expiredPoints': 0.0,
+        'level': '1',
         'levelConditionValue': 10.0,
-        'levelName': 'levelName',
-        'lockedPoints':10.0,
-        'nextLevel':'nextLevel',
-        'nextLevelConditionValue':10.0,
-        'nextLevelName':'nextLevelName',
-        'p2pPoints':10.0,
+        'levelName': '1',
+        'lockedPoints':0.0,
+        'nextLevel':'2',
+        'nextLevelConditionValue':50.0,
+        'nextLevelName':'2',
+        'p2pPoints':0.0,
         'points':10.0,
-        'pointsExpiringNextMonth':10.0,
+        'pointsExpiringNextMonth':0.0,
         'totalEarnedPoints':10.0,
         'transactionsAmount':10.0,
-        'transactionsAmountToNextLevel':10.0,
+        'transactionsAmountToNextLevel':40.0,
         'transactionsAmountWithoutDeliveryCosts':10.0,
-        'transactionsCount':1,
-        'usedPoints':10.0
+        'transactionsCount':0,
+        'usedPoints':0.0
       }
     })
         .then((value) => print("User Added"))
@@ -99,9 +106,9 @@ class CustomerApiProvider {
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
 
-      // You can then retrieve the value from the Map like this:
+      // You can then retrieve the value from Firebase like this:
 
-      CustomerModel customerModel = new CustomerModel(id: '', name: '', phone: '', email: '', birthday: '', gender: '', location: '', cmd: '', nationality: '', loyaltyCardNumber: '', levelId: '');
+      CustomerModel customerModel = new CustomerModel();
       customerModel.id = data['information']['id'];
       customerModel.name = data['information']['name'];
       customerModel.gender = data['information']['sex'];
@@ -122,19 +129,25 @@ class CustomerApiProvider {
     if (docSnapshot.exists) {
       Map<String, dynamic> data = docSnapshot.data()!;
 
-      // You can then retrieve the value from the Map like this:
+      // You can then retrieve the value from Firebase like this:
 
-      CustomerStatusModel customerStatusModel = new CustomerStatusModel(averageTransactionsAmount: 10.0, currency: '', expiredPoints: 10.0, level: '', levelConditionValue: 10.0, levelName: '', lockedPoints: 10.0, nextLevel: '', nextLevelConditionValue: 10.0, nextLevelName: '', p2pPoints: 10.0, points: 10.0, pointsExpiringNextMonth: 10.0, totalEarnedPoints: 10.0, transactionsAmount: 10.0, transactionsAmountToNextLevel: 10.0, transactionsAmountWithoutDeliveryCosts: 10.0, transactionsCount: 0, usedPoints: 10.0);
+      CustomerStatusModel customerStatusModel = CustomerStatusModel();
       customerStatusModel.averageTransactionsAmount = data['status']['averageTransactionsAmount'];
       customerStatusModel.currency = data['status']['currency'];
       customerStatusModel.expiredPoints = data['status']['expiredPoints'];
       customerStatusModel.level = data['status']['level'];
       customerStatusModel.levelConditionValue = data['status']['levelConditionValue'];
+      customerStatusModel.levelName = data['status']['levelName'];
+      customerStatusModel.lockedPoints = data['status']['lockedPoints'];
+      customerStatusModel.nextLevel = data['status']['nextLevel'];
+      customerStatusModel.nextLevelConditionValue = data['status']['nextLevelConditionValue'];
       customerStatusModel.nextLevelName = data['status']['nextLevelName'];
       customerStatusModel.p2pPoints = data['status']['p2pPoints'];
+      customerStatusModel.points = data['status']['points'];
       customerStatusModel.pointsExpiringNextMonth = data['status']['pointsExpiringNextMonth'];
       customerStatusModel.totalEarnedPoints = data['status']['totalEarnedPoints'];
       customerStatusModel.transactionsAmount = data['status']['transactionsAmount'];
+      customerStatusModel.transactionsAmountToNextLevel = data['status']['transactionsAmountToNextLevel'];
       customerStatusModel.transactionsAmountWithoutDeliveryCosts = data['status']['transactionsAmountWithoutDeliveryCosts'];
       customerStatusModel.transactionsCount = data['status']['transactionsCount'];
       customerStatusModel.usedPoints = data['status']['usedPoints'];
@@ -144,52 +157,183 @@ class CustomerApiProvider {
 
   //fetch list point transfer
   Future<ListPointTransferModel> fetchCustomerPointTransfer() async {
-    var docSnapshot = await point.doc(user?.uid).get();
     List<PointTransferModel> temp = [];
-    if (docSnapshot.exists) {
-      Map<String, dynamic> data = docSnapshot.data()!;
-      var length = data.length;
-      for(int i =0; i< length; i++) {
-        PointTransferModel trans1 =new PointTransferModel();
-        trans1.value =  data['Point $i']["value"] as double;
-        trans1.pointsTransferId = data['Point $i']["pointsTransferId"];
-        trans1.accountId = data['Point $i']["accountId"];
-        trans1.comment = data['Point $i']["comment"];
-        trans1.customerId = data['Point $i']["customerId"];
-        trans1.createdAt = DateTime.parse(data['Point $i']["createdAt"]);
-        trans1.issuer =data['Point $i']["issuer"];
-        trans1.expiresAt = DateTime.parse(data['Point $i']["expiresAt"]);
-        trans1.state = data['Point $i']["state"];
-        trans1.type = data['Point $i']["type"];
+    QuerySnapshot snapshot = await point.doc(user?.uid).collection('point').get();
+    snapshot.docs.forEach((doc) {
+      if(!temp.contains(doc.data())){
+        PointTransferModel trans1 =new PointTransferModel(doc.data());
         temp.add(trans1);
       }
-    }
+    });
+
     return ListPointTransferModel(pointTransferModels: temp, total: temp.length);
   }
 
-  Future<void> setCustomerPointTransfer() async {
-    final select = await point.doc(user?.uid).get();
-    if (select.exists) {
-      Map<String, dynamic> data_select = select.data()!;
-      var i = data_select.length;
-      var maintenance_data = {
-        "Point $i": {
-          "customerId": '$i',
-          "pointsTransferId": 'bookingDate.toIso8601String()',
-          "accountId": 'bookingTime',
-          "expiresAt": '2022-05-13T12:00:00.000Z',
-          "createdAt": '2022-05-13T12:00:00.000Z',
-          "value": i.toDouble(),
-          "state": "1$i.000.000",
-          "type": "adding",
-          "comment": 'comment',
-          "issuer":"issuer"
+  Future<void> setCustomerPointTransfer(
+      double value, String comment, String type, String? id
+      ) async {
+    final select = await point.doc(id).collection('point').get();
+    var i = select.size;
+    var pointtransfer_data = {
+        "customerId": user?.uid,
+        "pointsTransferId": 'bookingDate.toIso8601String()',
+        "accountId": '$i',
+        "expiresAt": '2023-05-13T12:00:00.000Z',
+        "createdAt": DateTime.now().toString(),
+        "value": value,
+        "state": "$i.000.000",
+        "type": type,
+        "comment": comment,
+        "issuer":"issuer"
+    };
+    return point.doc(id).collection('point').add(
+        pointtransfer_data)
+        .then((value) => print("Points Update"))
+        .catchError((error) => print("Failed to add user: $error"));
+
+  }
+  //point tranfer
+  Future<String?> pointTransfer(
+      String receiver,
+      double points
+      ) async{
+    final list_id = <String>[];
+    final list_phone = <String>[];
+    final data = {
+      "transfer": {
+        "receiver": receiver,
+        "points": points,
+      }
+    };
+    var st;
+    QuerySnapshot id = await customer.get();
+    id.docs.forEach((doc) {
+      list_id.add(doc.id);
+    });
+    for(int i=0; i< list_id.length; i++){
+      final docSnapshot = await customer.doc(list_id[i]).get();
+      var phone;
+      if (docSnapshot.exists) {
+        Map<String, dynamic> data = docSnapshot.data()!;
+        phone = data['information']['number'];
+        list_phone.add(phone);
+      }
+    }
+    for(int j=0; j< list_phone.length; j++){
+      if(receiver == list_phone[j]){
+        point.doc(user?.uid).collection('p2p_tranfer').add(data)
+            .then((value) => print("p2p_tranfer Update"))
+            .catchError((error) => print("Failed to add p2p_tranfer: $error"));
+        st = 'success';
+      }
+    }
+    return st;
+  }
+
+  //Update point
+  Future<void> UpdatePointSender(String comment, double points) async {
+    var docSnapshot = await customer.doc(user?.uid).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      CustomerStatusModel customerStatusModel = CustomerStatusModel();
+      customerStatusModel.p2pPoints = data['status']['p2pPoints'];
+      customerStatusModel.points = data['status']['points'];
+      customerStatusModel.transactionsAmount = data['status']['transactionsAmount'];
+      customerStatusModel.transactionsAmountToNextLevel = data['status']['transactionsAmountToNextLevel'];
+      customerStatusModel.transactionsAmountWithoutDeliveryCosts = data['status']['transactionsAmountWithoutDeliveryCosts'];
+      customerStatusModel.transactionsCount = data['status']['transactionsCount'];
+      customerStatusModel.usedPoints = data['status']['usedPoints'];
+      final upate_point = {
+        'status': {
+          'averageTransactionsAmount':10.0,
+          'currency': 'điểm',
+          'expiredPoints': 0.0,
+          'level': '1',
+          'levelConditionValue': 10.0,
+          'levelName': '1',
+          'lockedPoints':0.0,
+          'nextLevel':'2',
+          'nextLevelConditionValue':50.0,
+          'nextLevelName':'2',
+          'p2pPoints': points,
+          'points':customerStatusModel.transactionsAmount - points,
+          'pointsExpiringNextMonth':0.0,
+          'totalEarnedPoints':10.0,
+          'transactionsAmount': customerStatusModel.transactionsAmount - points,
+          'transactionsAmountToNextLevel': customerStatusModel
+              .transactionsAmountToNextLevel + points,
+          'transactionsAmountWithoutDeliveryCosts': customerStatusModel
+              .transactionsAmount - points,
+          'transactionsCount': customerStatusModel.transactionsCount + 1,
+          'usedPoints': points
         }
       };
-      return FirebaseFirestore.instance.collection('Points').doc(user?.uid).update(
-          maintenance_data)
-          .then((value) => print("Points Update"))
-          .catchError((error) => print("Failed to add user: $error"));
+      setCustomerPointTransfer(points, comment, 'using', user?.uid);
+      return customer.doc(user?.uid).update(upate_point);
+    }
+  }
+  Future<void> UpdatePointReceiver(String comment, double points) async{
+    final list_id = <String>[];
+    var id_receiver, phone;
+    QuerySnapshot id = await customer.get();
+    id.docs.forEach((doc) {
+      list_id.add(doc.id);
+    });
+    for(int i=0; i< list_id.length; i++){
+      final docSnapshot = await customer.doc(list_id[i]).get();
+      if (docSnapshot.exists) {
+        Map<String, dynamic> data = docSnapshot.data()!;
+        phone = data['information']['number'];
+        if(comment == phone){
+          id_receiver = list_id[i];
+        }
+      }
+    }
+    final docSnapshotsender = await customer.doc(user?.uid).get();
+    if (docSnapshotsender.exists) {
+      Map<String, dynamic> data = docSnapshotsender.data()!;
+      phone = data['information']['number'];
+    }
+    var docSnapshotreceiver = await customer.doc(id_receiver).get();
+    if (docSnapshotreceiver.exists) {
+      Map<String, dynamic> data = docSnapshotreceiver.data()!;
+      CustomerStatusModel customerStatusModel = CustomerStatusModel();
+      customerStatusModel.p2pPoints = data['status']['p2pPoints'];
+      customerStatusModel.points = data['status']['points'];
+      customerStatusModel.totalEarnedPoints = data['status']['totalEarnedPoints'];
+      customerStatusModel.transactionsAmount = data['status']['transactionsAmount'];
+      customerStatusModel.transactionsAmountToNextLevel = data['status']['transactionsAmountToNextLevel'];
+      customerStatusModel.transactionsAmountWithoutDeliveryCosts = data['status']['transactionsAmountWithoutDeliveryCosts'];
+      customerStatusModel.transactionsCount = data['status']['transactionsCount'];
+      customerStatusModel.usedPoints = data['status']['usedPoints'];
+      final upate_point = {
+        'status': {
+          'averageTransactionsAmount':10.0,
+          'currency': 'điểm',
+          'expiredPoints': 0.0,
+          'level': '1',
+          'levelConditionValue': 10.0,
+          'levelName': '1',
+          'lockedPoints':0.0,
+          'nextLevel':'2',
+          'nextLevelConditionValue':50.0,
+          'nextLevelName':'2',
+          'p2pPoints': points,
+          'points':customerStatusModel.transactionsAmount + points,
+          'pointsExpiringNextMonth':0.0,
+          'totalEarnedPoints':customerStatusModel.totalEarnedPoints + points,
+          'transactionsAmount': customerStatusModel.transactionsAmount + points,
+          'transactionsAmountToNextLevel': customerStatusModel
+              .transactionsAmountToNextLevel - points,
+          'transactionsAmountWithoutDeliveryCosts': customerStatusModel
+              .transactionsAmount + points,
+          'transactionsCount': customerStatusModel.transactionsCount,
+          'usedPoints': customerStatusModel.usedPoints
+        }
+      };
+
+      setCustomerPointTransfer(points, phone, 'adding', id_receiver);
+      return customer.doc(id_receiver).update(upate_point);
     }
   }
 
@@ -238,6 +382,20 @@ class CustomerApiProvider {
         .catchError((error) => print("Failed to add user: $error"));
   }
 
+  Future<bool> checkVoucher(String couponID) async {
+    final list_id = <String>[];
+    bool check=false;
+    QuerySnapshot id = await campaign.doc(user?.uid).collection('bought').get();
+    id.docs.forEach((doc) {
+      list_id.add(doc['coupon']['id']);
+    });
+    for(int i=0; i< list_id.length; i++){
+      if(couponID == list_id[i]){
+        check = true;
+      }
+    }
+    return check;
+  }
   //buy coupon(campaign)
   dynamic buyCoupon(String couponId, String costInPoints) async {
     print("entered");
@@ -247,12 +405,12 @@ class CustomerApiProvider {
     DateTime input = inputFormat.parse(dateStart);
     var bought_data = {
       "canBeUsed": false,
-      "campaignId": couponId,
+      "campaignId": id,
       "purchaseAt": '2022-05-13T12:00:00.000Z',
       "costInPoints": double.tryParse(costInPoints),
       "used": false,
       "coupon": {
-        "id": '023456789',
+        "id": couponId,
         "code":'ABCDEF',
       },
       "status": 'inactive',
@@ -276,7 +434,6 @@ class CustomerApiProvider {
     });
     return ListCouponModel(couponModel: _newList, total: _newList.length);
   }
-
 
   //Maintenance
   Future<ListMaintenanceModel_1> fetchCustomerMaintenanceBooking() async {
@@ -336,7 +493,7 @@ class CustomerApiProvider {
       String bookingTime,
       DateTime createAt,
       ) async {
-    final select = await warranty.doc("user?.uid").get();
+    final select = await warranty.doc(user?.uid).get();
     if (select.exists) {
       Map<String, dynamic> data_select = select.data()!;
       var i = data_select.length;
@@ -391,6 +548,53 @@ class CustomerApiProvider {
           .catchError((error) => print("Failed to add user: $error"));
       return 'succes';
     }
+  }
+
+  //Request Support
+  Future<void> requestSupport(RequestSupportModel requestSupportModel) async {
+    var _value;
+    final data = {
+        'senderId': user?.uid,
+        'senderName': requestSupportModel.senderName,
+        'problemType': requestSupportModel.problemType,
+        'description':requestSupportModel.description,
+        'isActive': requestSupportModel.isActive ? "true" : "false",
+        'photo': requestSupportModel.photo,
+        'timestamp': DateTime.now().toIso8601String()
+    };
+    FirebaseFirestore.instance.collection('Request Support').add(data)
+        .then((value) => {_value = 1, print("Request Support add")})
+        .catchError((error) => {_value = 0,print("Failed to add Request Support: $error")});
+    print(_value);
+  }
+  //Location
+  Future<void> setStores() async {
+    final data_store = {
+      "offices 0": {
+        "address": "109 Đường Nguyễn Duy Trinh, Phường Bình Trưng Tây, Quận 2, Thành phố Hồ Chí Minh",
+        "id": "00",
+        "lat":10.7883213,
+        "lng":106.7582736,
+        "name": "Cửa hàng số 0"
+      },
+      "offices 1": {
+        "address": "447 Đường Phan Văn Trị, Phường 5, Quận Gò Vấp, Thành phố Hồ Chí Minh",
+        "id": "01",
+        "lat":10.8222785,
+        "lng":106.6929956,
+        "name": "Cửa hàng số 1"
+      },
+      "offices 2": {
+        "address": "119/7/1 Đường số 7, Phường 3, Quận Gò Vấp, Thành phố Hồ Chí Minh",
+        "id": "02",
+        "lat":10.8113253,
+        "lng":106.6817612,
+        "name": "Cửa hàng số 2"
+      }
+    };
+    return FirebaseFirestore.instance.collection('Location').doc('store').set(data_store)
+        .then((value) => print("Store Added"))
+        .catchError((error) => print("Failed to add store: $error"));
   }
 }
 

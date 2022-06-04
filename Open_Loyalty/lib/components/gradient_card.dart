@@ -26,17 +26,12 @@ class GradientCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    CouponBloc couponBloc = CouponBloc();
-
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 16),
         child: GestureDetector(
           onTap: () {
-            _showWaitingDialog(context);
-            couponBloc
-                .buyCoupon(couponId,costInPoints)
-                .then((value) => {_showDialog(context)});
+            _showDialog(context);
           },
           child: Stack(
             children: <Widget>[
@@ -62,7 +57,7 @@ class GradientCard extends StatelessWidget {
                 bottom: 0,
                 top: 0,
                 child: CustomPaint(
-                  size: Size(100, 150),
+                  size: const Size(100, 150),
                   painter: CustomCardShapePainter(
                       _borderRadius, startColor, endColor),
                 ),
@@ -87,18 +82,18 @@ class GradientCard extends StatelessWidget {
                             name == "Inactive"
                                 ? "Khuyến mãi 20%"
                                 : "Khuyễn mãi 5%",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: footnote,
                                 fontWeight: FontWeight.w700),
                           ),
                           SizedBox(height: 10),
                           Text(
                             campaignActivity,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: footnote,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.end,
@@ -108,7 +103,7 @@ class GradientCard extends StatelessWidget {
                                 color: Colors.amber[900],
                                 size: footnote,
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 8,
                               ),
                               Flexible(
@@ -118,11 +113,11 @@ class GradientCard extends StatelessWidget {
                                     children: [
                                       Text(
                                         costInPoints,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           fontSize: footnote,
                                         ),
                                       ),
-                                      Text(
+                                      const Text(
                                         " điểm",
                                         style: TextStyle(
                                           fontSize: footnote,
@@ -158,26 +153,94 @@ class GradientCard extends StatelessWidget {
   }
 
   _showDialog(BuildContext context) {
+    CouponBloc couponBloc = CouponBloc();
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          actionsAlignment: MainAxisAlignment.center,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          actions: <Widget>[
+            const SizedBox(
+              height: 10,
+            ),
+            RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(color: mPrimaryColor)),
+                color: mPrimaryColor,
+                child: const Text('Quay lại',
+                    style:
+                    TextStyle(color: Colors.white, fontSize: 15)),
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                }),
+            const SizedBox(
+              height: 10,
+            ),
+            RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(color: mPrimaryColor)),
+                color: mPrimaryColor,
+                child: const Text('Đồng ý',
+                    style:
+                    TextStyle(color: Colors.white, fontSize: 15)),
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  _showWaitingDialog(context);
+                  couponBloc.checkCoupon(couponId).then((value) => {
+                    if(value) {
+                      _showErrorDialog(context)
+                    }
+                    else{
+                      couponBloc.buyCoupon(couponId,costInPoints).then((value) => {_showSuccessDialog(context)})
+                    }
+                  });
+                })
+          ],
+          title: Container(
+            child: Column(
+              children: [
+                const Image(
+                  width: 200,
+                  height: 200,
+                  image: AssetImage("assets/images/idea.png"),
+                ),
+                Text(
+                  "Bạn có muốn đổi " + costInPoints.toString() + " để lấy voucher này không?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: 16, color: Colors.black),
+                ),
+
+              ],
+            ),
+          ),
+        ));
+  }
+
+  _showSuccessDialog(BuildContext context) {
     Navigator.pop(context);
     showDialog(
         context: context,
-        builder: (_) => new AlertDialog(
+        builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25.0),
               ),
               title: Container(
                 child: Column(
                   children: [
-                    Image(
+                    const Image(
                       width: 250,
                       height: 250,
                       image: AssetImage("assets/images/success.gif"),
                     ),
-                    Text(
+                    const Text(
                       "Chúc mừng bạn đã đổi điểm thành công!",
                       style: TextStyle(fontSize: 16, color: mPrimaryColor),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     RaisedButton(
@@ -185,24 +248,65 @@ class GradientCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10.0),
                             side: BorderSide(color: mPrimaryColor)),
                         color: mPrimaryColor,
-                        child: Text('Quay lại',
+                        child: const Text('Quay lại',
                             style:
                                 TextStyle(color: Colors.white, fontSize: 15)),
                         onPressed: () {
                           Navigator.of(context, rootNavigator: true).pop();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return CampaignScreen();
-                              },
-                            ),
-                          );
                         })
                   ],
                 ),
               ),
             ));
+  }
+
+  _showErrorDialog(BuildContext context) {
+    Navigator.pop(context);
+    showDialog(
+        context: context,
+        builder: (_) => AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25.0),
+          ),
+          title: Container(
+            child: Column(
+              children: [
+                const Image(
+                  width: 250,
+                  height: 250,
+                  image: AssetImage("assets/images/error.gif"),
+                ),
+                const Text(
+                  "Thất bại",
+                  style: TextStyle(fontSize: mFontSize, color: Colors.red),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                const Text(
+                  "Bạn đã thêm voucher này rồi!",
+                  textAlign: TextAlign.center,
+                  style:
+                  TextStyle(color: Colors.black, fontSize: mFontSize),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                RaisedButton(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        side: BorderSide(color: mPrimaryColor)),
+                    color: mPrimaryColor,
+                    child: const Text('Quay lại',
+                        style:
+                        TextStyle(color: Colors.white, fontSize: 15)),
+                    onPressed: () {
+                      Navigator.of(context, rootNavigator: true).pop();
+                    })
+              ],
+            ),
+          ),
+        ));
   }
 
   _showWaitingDialog(BuildContext context) {

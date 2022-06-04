@@ -17,4 +17,17 @@ class PointTransferModel {
   //String transactionId;
   late String comment;
   late String issuer;
+
+  PointTransferModel(item){
+    value =  item["value"] as double;
+    pointsTransferId = item["pointsTransferId"];
+    accountId = item["accountId"];
+    comment = item["comment"];
+    customerId = item["customerId"];
+    createdAt = DateTime.parse(item["createdAt"]);
+    issuer =item["issuer"];
+    expiresAt = DateTime.parse(item["expiresAt"]);
+    state = item["state"];
+    type = item["type"];
+  }
 }

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -53,7 +54,7 @@ class _PointTransferState extends State<PointTransfer> {
                 "/home", (Route<dynamic> route) => false)),
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Lịch sử sử dụng điểm',
           style: TextStyle(
             fontSize: subhead,
@@ -73,10 +74,10 @@ class _PointTransferState extends State<PointTransfer> {
                     SizedBox(
                       height: size.height * 0.2,
                     ),
-                    Text("Hiện tại bạn chưa có thông tin đăng kí nào!",
+                    const Text("Hiện tại bạn chưa có thông tin đăng kí nào!",
                         style:
                         TextStyle(color: Colors.grey, fontSize: mFontSize)),
-                    SizedBox(
+                    const SizedBox(
                       height: 20.0,
                     ),
                     SvgPicture.asset(
@@ -107,6 +108,20 @@ class _PointTransferState extends State<PointTransfer> {
   }
 
   Widget pointtransfer(PointTransferModel pointTransferModel) {
+    User? user = FirebaseAuth.instance.currentUser;
+    String Comment(String comment){
+      var cm;
+      if(comment == 'newuser'){
+        cm  = 'Chào bạn mới';
+      }
+      else if(pointTransferModel.customerId == user?.uid){
+        cm =  'Chuyển điểm đến số điện thoại '+comment;
+      }
+      else{
+        cm = 'Nhận điểm từ số điện thoại '+ comment;
+      }
+      return cm;
+    }
     return Card(
         shape: RoundedRectangleBorder(
           side: BorderSide(color: Colors.white70, width: 1),
@@ -180,7 +195,10 @@ class _PointTransferState extends State<PointTransfer> {
                     Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(pointTransferModel.value.toString(),
+                          Text(
+                              pointTransferModel.type == "adding"
+                              ? '+'+pointTransferModel.value.toString()
+                              : '-'+pointTransferModel.value.toString(),
                               style: Constants.contentProductDetail),
                           SizedBox(
                             height: space_height * 2,
@@ -194,9 +212,7 @@ class _PointTransferState extends State<PointTransfer> {
                             height: space_height * 2,
                           ),
                           Text(
-                              pointTransferModel.comment == null
-                                  ? ""
-                                  : "Chào bạn mới",
+                              Comment(pointTransferModel.comment),
                               style: Constants.contentProductDetail),
                           SizedBox(
                             height: space_height * 2,

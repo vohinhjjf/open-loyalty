@@ -9,6 +9,8 @@ import 'package:open_loyalty/view/point_transfer/point_transfer_screen.dart';
 import 'package:open_loyalty/view/points/PointBloc.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 
+import '../point_transfer/p2p_point_transfer.dart';
+
 class PointScreen extends StatefulWidget {
   @override
   _PointScreenState createState() => _PointScreenState();
@@ -21,7 +23,6 @@ class _PointScreenState extends State<PointScreen> {
   @override
   void initState() {
     super.initState();
-    _repository.setPointTransfer();
     pointBloc.fetchCustomerStatus();
   }
 
@@ -106,14 +107,14 @@ class _PointScreenState extends State<PointScreen> {
             padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
             child: InkWell(
               onTap: () {
-                /*Navigator.push(
+                Navigator.push(
                   context,
                   MaterialPageRoute(
                     builder: (context) {
                       return P2PTransferPoint(customerStatus.points.toString());
                     },
                   ),
-                );*/
+                );
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -277,7 +278,7 @@ class _PointScreenState extends State<PointScreen> {
               ),
               const Padding(padding: EdgeInsets.symmetric(vertical: 2.0)),
               Text(
-                "Chiết khấu cấp tiếp theo " + customerStatus.nextLevel,
+                "Cấp độ tiếp theo " + customerStatus.nextLevel,
                 style: TextStyle(fontSize: footnote, color: Colors.grey),
               )
             ]));
@@ -325,7 +326,7 @@ class _PointScreenState extends State<PointScreen> {
               padding: EdgeInsets.fromLTRB(0, 0, 0, 15),
               alignment: Alignment.center,
               child: Text(
-                  "Chiết khấu hiện tại" + " " + customerStatus.level.toString(),
+                  "Cấp độ hiện tại" + " " + customerStatus.level.toString(),
                   style: TextStyle(fontSize: footnote)))
         ],
       ),

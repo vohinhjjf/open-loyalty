@@ -13,6 +13,10 @@ class CouponBloc {
     _repository.buyCoupon(couponId,costInPoints);
   }
 
+  Future<bool> checkCoupon(String couponID) async {
+    return _repository.checkVoucher(couponID);
+  }
+
   fetchCustomerCoupon() async {
     if (!_customerCouponFetcher.isClosed) {
       print("fetch cus coupon bought");

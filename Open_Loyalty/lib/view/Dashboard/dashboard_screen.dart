@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:open_loyalty/Firebase/locations.dart';
 import 'package:open_loyalty/Firebase/respository.dart';
 import 'package:open_loyalty/view/account_screen/account_screen.dart';
 import 'package:open_loyalty/view/campaign/components/coupon_bloc.dart';
@@ -15,7 +16,6 @@ class ProfileScreen extends StatefulWidget {
 }
 
 AppBar homeAppBar(BuildContext context) {
-  Repository _repository = Repository();
   return AppBar(
     backgroundColor: Colors.white,
     elevation: 0,
@@ -29,7 +29,7 @@ AppBar homeAppBar(BuildContext context) {
       IconButton(
         icon: SvgPicture.asset("assets/icons/bell.svg"),
         onPressed: () {
-          print("click");
+          getStores();
         },
       ),
     ],
@@ -38,10 +38,12 @@ AppBar homeAppBar(BuildContext context) {
 
 class _ProfileScreenState extends State {
   int _selectedIndex = 0;
+  Repository _repository = Repository();
 
   @override
   void initState() {
     super.initState();
+    _repository.setStores();
   }
 
   @override
