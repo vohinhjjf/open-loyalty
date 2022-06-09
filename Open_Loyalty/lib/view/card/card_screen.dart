@@ -6,9 +6,9 @@ import 'package:open_loyalty/models/maintenance.dart';
 import 'package:open_loyalty/view/campaign/campaign_screen.dart';
 import '../../constant.dart';
 import 'package:barcode_widget/barcode_widget.dart';
+import '../Admin/Chat/ChatScreen.dart';
 import '../product/product_screen.dart';
 import '../stores/stores_screen.dart';
-import '../support/start_conversation_screen.dart';
 
 class CardScreen extends StatefulWidget {
   @override
@@ -44,9 +44,9 @@ class _BodyState extends State<Body> {
     super.initState();
     _value = _repository.getCustomerData();
   }
+
   @override
   Widget build(BuildContext context) {
-
     return SingleChildScrollView(
       child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -64,14 +64,14 @@ class _BodyState extends State<Body> {
               child: FutureBuilder<CustomerModel?>(
                   future: _value,
                   builder: (context, AsyncSnapshot<CustomerModel?> snapshot) {
-                print(snapshot.connectionState);
-                if (snapshot.hasData) {
-                  return cardInfo(snapshot.data);
-                } else if (snapshot.hasError) {
-                  return Text(snapshot.error.toString());
-                }
-                return Center(child: CircularProgressIndicator());
-              }),
+                    print(snapshot.connectionState);
+                    if (snapshot.hasData) {
+                      return cardInfo(snapshot.data);
+                    } else if (snapshot.hasError) {
+                      return Text(snapshot.error.toString());
+                    }
+                    return Center(child: CircularProgressIndicator());
+                  }),
             ),
             const Padding(
               padding: EdgeInsets.only(left: 16, top: 14),
@@ -132,7 +132,14 @@ class _BodyState extends State<Body> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return StartConverstionScreen();
+                                  return ChatPage(
+                                    arguments: ChatPageArguments(
+                                      peerId: 'pEodccDjmgQZ7Iu3iS8XjAW1Ep53',
+                                      peerAvatar:
+                                          'https://cdn-icons-png.flaticon.com/512/1177/1177568.png?w=360',
+                                      peerNickname: 'Admin',
+                                    ),
+                                  );
                                 },
                               ),
                             );
