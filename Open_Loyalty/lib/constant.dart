@@ -27,6 +27,7 @@ const space_height = 6.0;
 TextStyle dayStyle(FontWeight fontWeight) {
   return TextStyle(color: Colors.black, fontWeight: fontWeight);
 }
+
 /// Function Format DateTime to String with layout string
 String formatNumber(double value) {
   final f = new NumberFormat("#,###", "vi_VN");
@@ -54,8 +55,29 @@ class Constants {
       fontWeight: FontWeight.w400);
 
   static final TextStyle titleProductDetail =
-  TextStyle(fontSize: footnote, color: Colors.grey[500]);
+      TextStyle(fontSize: footnote, color: Colors.grey[500]);
 
   static final TextStyle contentProductDetail =
-  TextStyle(fontSize: footnote, color: Colors.black);
+      TextStyle(fontSize: footnote, color: Colors.black);
+}
+
+class FirestoreConstants {
+  static const pathUserCollection = "Users";
+  static const pathMessageCollection = "messages";
+  static const name = "name";
+  static const id = "id";
+  static const email = "email";
+  static const chattingWith = "chattingWith";
+  static const idFrom = "idFrom";
+  static const idTo = "idTo";
+  static const timestamp = "timestamp";
+  static const content = "content";
+  static const type = "type";
+}
+
+class ColorConstants {
+  static const themeColor = Color(0xfff5a623);
+  static const primaryColor = Color(0xff203152);
+  static const greyColor = Color(0xffaeaeae);
+  static const greyColor2 = Color(0xffE8E8E8);
 }

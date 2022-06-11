@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:open_loyalty/Screens/register/register.dart';
 import 'package:open_loyalty/components/background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import '../../view/Admin/Dashboard/AdminScreen/AdminScreen.dart';
 import '../../view/Dashboard/dashboard_screen.dart';
 import '../forget_password/forget_password.dart';
 
@@ -172,8 +173,13 @@ class _HomePageState extends State {
                     User? user = await loginUsingEmailPassword(
                         email: email, password: password, context: context);
                     if (user != null) {
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => ProfileScreen()));
+                      if (user.email == "trng1907@gmail.com") {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => AdminScreen()));
+                      } else {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                            builder: (context) => ProfileScreen()));
+                      }
                     }
                   },
                   shape: RoundedRectangleBorder(
