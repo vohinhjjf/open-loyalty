@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:open_loyalty/constant.dart';
 import 'package:open_loyalty/Firebase/locations.dart' as locations;
+
+import 'edit.dart';
 
 
 class Body extends StatefulWidget {
@@ -94,23 +97,62 @@ class _BodyState extends State<Body> {
   }
 
   Widget listStore() {
+    User? user = FirebaseAuth.instance.currentUser;
     return FutureBuilder<locations.Locations>(
         future: locations.getStores(),
         builder: (context, AsyncSnapshot<locations.Locations> snapshot) {
           if (snapshot.hasData) {
             return Column(
               children: [
-                Row(
+                user!.email != 'admin@gmail.com'
+                ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Center(
+                  children: [
+                    const Center(
+                        child: Text(
+                          "Danh sách cửa hàng",
+                          style: TextStyle(
+                              fontSize: mFontSize, fontWeight: FontWeight.w600),
+                        )),
+                    const SizedBox(),
+                    Container()
+                  ],
+                )
+                : Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    const Center(
                         child: Text(
                       "Danh sách cửa hàng",
                       style: TextStyle(
-                          fontSize: subhead, fontWeight: FontWeight.w600),
-                    ))
+                          fontSize: mFontSize, fontWeight: FontWeight.w600),
+                    )),
+                    const SizedBox(
+                      child: Padding(padding: EdgeInsets.only(left: 28.0)),
+                    ),
+                    InkWell(
+                      onTap: (){
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return Edit();
+                            },
+                          ),
+                        );
+                      },
+                      child: const Text(
+                            'Chỉnh sửa',
+                            style: TextStyle(
+                              color: Colors.blue,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                        ),
+                      ),
+
+                    )
                   ],
-                ),
+                ),//Danh sách cửa hàng
                 SizedBox(
                   height: 20,
                 ),
@@ -119,7 +161,7 @@ class _BodyState extends State<Body> {
                       separatorBuilder: (context, index) => const Divider(
                             color: mDividerColor,
                           ),
-                      itemCount: 3,
+                      itemCount: snapshot.data!.size,
                       itemBuilder: (context, index) {
                         return GestureDetector(
                           onTap: () =>
@@ -152,7 +194,8 @@ class _BodyState extends State<Body> {
                 ),
               ],
             );
-          } else if (snapshot.hasError) {
+          }
+          else if (snapshot.hasError) {
             return Text(snapshot.error.toString());
           } else {
             return Center(child: const CircularProgressIndicator());

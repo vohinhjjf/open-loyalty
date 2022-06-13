@@ -23,13 +23,13 @@ class Office {
 }
 late Position currentPosition;
 class Locations {
-  final size = 3;
+  final size;
   List<Office> offices = [];
 
-  Locations(data) {
+  Locations(data, this.size) {
     List<Office> temp = [];
 
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; i < this.size; i++) {
       Office office = Office(data["offices $i"]);
       double distance = (Geolocator.distanceBetween(office.lat, office.lng,
           currentPosition.latitude, currentPosition.longitude) /
@@ -55,7 +55,8 @@ Future<Locations> getStores() async {
   late Locations stores;
   if (docSnapshot.exists) {
     Map<String, dynamic> data = docSnapshot.data()!;
-    stores = Locations(data);
+    print(data.length);
+    stores = Locations(data,data.length);
   };
   print(stores.offices.length);
   return stores;

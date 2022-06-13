@@ -13,12 +13,13 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
             color: mPrimaryColor,
-            size: subhead,
+            size: mFontSize,
           ),
           onPressed: () => Navigator.pop(context),),
         backgroundColor: Colors.white,
@@ -26,7 +27,7 @@ class _AccountInfoScreenState extends State<AccountInfoScreen> {
         title: const Text(
           'Thông tin tài khoản',
           style: TextStyle(
-            fontSize: subhead,
+            fontSize: mFontSize,
             color: Colors.black,
             fontWeight: FontWeight.w500,
           ),

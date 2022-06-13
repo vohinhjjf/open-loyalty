@@ -79,9 +79,7 @@ class GradientCard extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            name == "Inactive"
-                                ? "Khuyến mãi 20%"
-                                : "Khuyễn mãi 5%",
+                            name,
                             style: const TextStyle(
                                 fontSize: footnote,
                                 fontWeight: FontWeight.w700),

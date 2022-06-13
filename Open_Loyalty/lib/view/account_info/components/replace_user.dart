@@ -36,6 +36,7 @@ class _BodyState extends State<Body> {
   var mobile = TextEditingController();
   var email = TextEditingController();
   var location = TextEditingController();
+  var loyaltyCardNumber;
 
   CalendarFormat format = CalendarFormat.month;
   late CalendarController _calendarController;
@@ -104,13 +105,16 @@ class _BodyState extends State<Body> {
   updateProfile(){
     return FirebaseFirestore.instance.collection('Users').doc(user?.uid).update({
       'information':{
+        'userId': user?.uid,
+        'loyaltyCardNumber': loyaltyCardNumber,
         'name' : name.text,
-        'sex' : sex.text,
+        'gender' : sex.text,
         'birthday' : birthday.text,
         'nationality' : nationality.text,
         'cmd' : cmd.text,
         'number' : mobile.text,
         'email' : email.text,
+        'levelId': '',
         'location' : location.text,
       }
     });
@@ -128,6 +132,7 @@ class _BodyState extends State<Body> {
           mobile.text = value.phone;
           email.text = user!.email!;
           location.text = value.location;
+          loyaltyCardNumber = value.loyaltyCardNumber;
         })
       }
     });

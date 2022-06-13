@@ -42,8 +42,12 @@ class Repository {
   Future<ListCampaignModel?> fetchCustomerCampaign() =>
       customerApiProvider.fetchCustomerCampaign();
 
-  Future<void> setCustomerCampaign() =>
-      customerApiProvider.setCustomerCampaign();
+  Future<void> addCustomerCampaign(
+      String name,
+      String campaignId,
+      String reward,
+      double costInPoints) =>
+      customerApiProvider.addCustomerCampaign(name,campaignId,reward,costInPoints);
 
   dynamic buyCoupon(String couponId, String costInPoints) =>
       customerApiProvider.buyCoupon(couponId,costInPoints);

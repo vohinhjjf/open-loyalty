@@ -14,9 +14,13 @@ class CampaignBloc {
     _campaignFetcher.sink.add(campaignModel!);
   }
 
-  void setCustomerCampaign() async {
+  dynamic addCustomerCampaign(
+      String name,
+      String campaignId,
+      String reward,
+      double costInPoints) async {
     print("set customer campaign");
-    return await _repository.setCustomerCampaign();
+    return await _repository.addCustomerCampaign(name,campaignId,reward,costInPoints);
   }
 
   dispose() {

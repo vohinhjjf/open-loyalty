@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:open_loyalty/Screens/register/register.dart';
 import 'package:open_loyalty/components/background.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../view/Admin/Dashboard/AdminScreen/AdminScreen.dart';
+import '../../constant.dart';
 import '../../view/Dashboard/dashboard_screen.dart';
 import '../forget_password/forget_password.dart';
 
@@ -40,7 +40,6 @@ class _HomePageState extends State {
       user = userCredential.user;
     } on FirebaseException catch (e) {
       String error = e.message.toString();
-      var errorCode = e.code;
       if (error != 'Given String is empty or null') {
         showDialog(
             context: context,
@@ -64,7 +63,7 @@ class _HomePageState extends State {
 
     return Scaffold(
       body: Background(
-        child: new SingleChildScrollView(
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -75,7 +74,7 @@ class _HomePageState extends State {
                   "LOGIN",
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF2661FA),
+                      color: mPrimaryColor,
                       fontSize: 36),
                   textAlign: TextAlign.left,
                 ),
@@ -93,7 +92,7 @@ class _HomePageState extends State {
                   decoration: InputDecoration(
                     hintText: "Email",
                     errorText: _validate1 ? 'Email is empty' : null,
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.email,
                       color: Colors.orange,
                     ),
@@ -173,13 +172,8 @@ class _HomePageState extends State {
                     User? user = await loginUsingEmailPassword(
                         email: email, password: password, context: context);
                     if (user != null) {
-                      if (user.email == "trng1907@gmail.com") {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => AdminScreen()));
-                      } else {
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => ProfileScreen()));
-                      }
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => ProfileScreen()));
                     }
                   },
                   shape: RoundedRectangleBorder(
@@ -221,7 +215,7 @@ class _HomePageState extends State {
                     style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: Color(0xFF2661FA)),
+                        color: mPrimaryColor),
                   ),
                 ),
               )

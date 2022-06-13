@@ -1,6 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:open_loyalty/constant.dart';
-
 class CustomerModel {
   late String id;
   late String name;
@@ -14,53 +11,6 @@ class CustomerModel {
   late String levelId;
   late String location;
 
-  CustomerModel({
-    required this.id,
-    required this.name,
-    required this.gender,
-    required this.birthday,
-    required this.nationality,
-    required this.cmd,
-    required this.phone,
-    required this.email,
-    required this.loyaltyCardNumber,
-    required this.levelId,
-    required this.location,
-  });
-
-  Map<String, String> toJson() {
-    return {
-      FirestoreConstants.name: name,
-      FirestoreConstants.email: email,
-    };
-  }
-
-  factory CustomerModel.fromDocument(DocumentSnapshot doc) {
-    String email = "";
-    String name = "";
-    String gender = "";
-    String birthday = "";
-    String nationality = "";
-    String cmd = "";
-    String phone = "";
-    String loyaltyCardNumber = "";
-    String levelId = "";
-    String location = "";
-    Map<String, dynamic> data = doc.get(['information'][0]);
-    return CustomerModel(
-      id: doc.id,
-      name: data['name'] as String,
-      gender: gender,
-      birthday: birthday,
-      nationality: nationality,
-      cmd: cmd,
-      phone: phone,
-      email: data['email'] as String,
-      loyaltyCardNumber: loyaltyCardNumber,
-      levelId: levelId,
-      location: location,
-    );
-  }
 }
 
 class CustomerStatusModel {
@@ -84,3 +34,5 @@ class CustomerStatusModel {
   late String currency;
   late double pointsExpiringNextMonth;
 }
+
+

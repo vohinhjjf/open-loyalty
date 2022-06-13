@@ -11,6 +11,7 @@ class _GetMyStoresState extends State<GetMyStores> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       appBar: AppBar(
         elevation: 0,
         leading: IconButton(
@@ -23,7 +24,7 @@ class _GetMyStoresState extends State<GetMyStores> {
                 "/home", (Route<dynamic> route) => false)),
         backgroundColor: Colors.white,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Tìm cửa hàng',
           style: TextStyle(
             fontSize: subhead,

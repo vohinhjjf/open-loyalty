@@ -49,7 +49,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
             icon: const Icon(
               Icons.arrow_back_ios,
               color: mPrimaryColor,
-              size: subhead,
+              size: mFontSize,
             ),
             onPressed: () => Navigator.pop(context),),
         backgroundColor: Colors.white,
@@ -57,7 +57,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
         title: const Text(
           'Trung tâm hỗ trợ',
           style: TextStyle(
-            fontSize: subhead,
+            fontSize: mFontSize,
             color: Colors.black,
             fontWeight: FontWeight.w500,
           ),
@@ -77,7 +77,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
                       children: [
                         const Text("Chọn vấn đề hỗ trợ",
                             style: TextStyle(
-                                fontSize: footnote,
+                                fontSize: mFontSize,
                                 color: mPrimaryColor,
                                 fontWeight: FontWeight.w600)),
                         IconButton(
@@ -105,7 +105,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
                                                     child: Text(
                                                       "Loại vấn đề",
                                                       style: TextStyle(
-                                                          fontSize: footnote,
+                                                          fontSize: mFontSize,
                                                           fontWeight:
                                                           FontWeight.w600),
                                                     ))
@@ -134,7 +134,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
                                                         title: Text(
                                                           problems[index],
                                                           style: const TextStyle(
-                                                              fontSize: footnote),
+                                                              fontSize: mFontSize),
                                                         ),
                                                       ),
                                                     );
@@ -152,7 +152,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
                         Text(
                         problem,
                         style: const TextStyle(
-                            fontSize: footnote,
+                            fontSize: mFontSize,
                             color: mPrimaryColor,
                             fontWeight: FontWeight.w600),
                     ),
@@ -181,7 +181,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
                                                 child: Text(
                                                   "Loại vấn đề",
                                                   style: TextStyle(
-                                                      fontSize: footnote,
+                                                      fontSize: mFontSize,
                                                       fontWeight:
                                                       FontWeight.w600),
                                                 ))
@@ -211,7 +211,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
                                                         problems[index],
                                                         style: const TextStyle(
                                                             fontSize:
-                                                            footnote)),
+                                                            mFontSize)),
                                                   ),
                                                 );
                                               },
@@ -238,7 +238,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(6)),
                   ),
                   hintText: 'Mô tả',
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: footnote),
+                  hintStyle: TextStyle(color: Colors.grey, fontSize: mFontSize),
                 ),
               ),
             ),
@@ -251,7 +251,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text("Chọn hình ảnh", style: TextStyle(fontSize: footnote)),
+                  const Text("Chọn hình ảnh", style: TextStyle(fontSize: mFontSize)),
                   InkWell(
                     onTap: () {
                       showModalBottomSheet(
@@ -268,7 +268,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
                       child: const FaIcon(
                         FontAwesomeIcons.camera,
                         color: Colors.white,
-                        size: footnote,
+                        size: mFontSize,
                       ),
                     ),
                   ),
@@ -335,6 +335,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
       ),
     );
   }
+
   showLoaderDialog(BuildContext context) {
     AlertDialog alert = AlertDialog(
       content: Row(
@@ -478,7 +479,7 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       child: Column(
         children: [
-          const Text("Chọn ảnh hoặc video", style: TextStyle(fontSize: footnote)),
+          const Text("Chọn ảnh hoặc video", style: TextStyle(fontSize: mFontSize)),
           const SizedBox(height: 20),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -486,11 +487,11 @@ class _SupportRequestScreenState extends State<SupportRequestScreen> {
               FlatButton.icon(
                   onPressed: () => _openGallary(ImageSource.camera),
                   icon: const Icon(Icons.camera),
-                  label: const Text("Camera", style: TextStyle(fontSize: footnote))),
+                  label: const Text("Camera", style: TextStyle(fontSize: mFontSize))),
               FlatButton.icon(
                   onPressed: () => _openGallary(ImageSource.gallery),
                   icon: const Icon(Icons.collections),
-                  label: const Text("Thư viện", style: TextStyle(fontSize: footnote)))
+                  label: const Text("Thư viện", style: TextStyle(fontSize: mFontSize)))
             ],
           )
         ],

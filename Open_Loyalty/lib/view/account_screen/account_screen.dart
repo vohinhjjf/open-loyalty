@@ -11,10 +11,22 @@ import '../support_request/support_screen.dart';
 class AccountScreen extends StatefulWidget {
 
   @override
+  _AccountScreenState createState() => _AccountScreenState();
+}
+class _AccountScreenState extends State<AccountScreen> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.grey[50],
+      body: Body(),
+    );
+  }
+}
+class Body extends StatefulWidget {
+  @override
   _BodyState createState() => _BodyState();
 }
-
-class _BodyState extends State<AccountScreen> {
+class _BodyState extends State<Body> {
   @override
   void initState() {
     super.initState();
@@ -28,12 +40,13 @@ class _BodyState extends State<AccountScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView(
-      // padding: EdgeInsets.only(top: space_height),
+      padding: EdgeInsets.only(top: space_height),
       children: <Widget>[
          ListTile(
           dense: true,
           leading: const Icon(
             Icons.person,
+            color: mPrimaryColor,
             size: mFontSize,
           ),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -52,12 +65,13 @@ class _BodyState extends State<AccountScreen> {
               ),
             );
           },
-        ),
-        Divider(),
+        ), //Tài khoản
+        Divider(height: 20,color: Colors.blue[100],indent: 20,endIndent: 20),
         ListTile(
           dense: true,
           leading: const Icon(
             Icons.construction,
+            color: mPrimaryColor,
             size: mFontSize,
           ),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -76,12 +90,13 @@ class _BodyState extends State<AccountScreen> {
               ),
             );
           },
-        ),
-         Divider(),
+        ), //bảo trì
+         Divider(height: 20,color: Colors.blue[100],indent: 20,endIndent: 20),
         ListTile(
           dense: true,
           leading: const Icon(
             Icons.business_center,
+            color: mPrimaryColor,
             size: mFontSize,
           ),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -100,12 +115,13 @@ class _BodyState extends State<AccountScreen> {
               ),
             );
           },
-        ),
-         Divider(),
+        ), //bảo hành
+         Divider(height: 20,color: Colors.blue[100],indent: 20,endIndent: 20),
         ListTile(
           dense: true,
           leading: const Icon(
             Icons.mail,
+            color: mPrimaryColor,
             size: mFontSize,
           ),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -124,12 +140,13 @@ class _BodyState extends State<AccountScreen> {
               ),
             );
           },
-        ),
-         Divider(),
+        ), // Góp ý
+         Divider(height: 20,color: Colors.blue[100],indent: 20,endIndent: 20),
         ListTile(
           dense: true,
           leading: const Icon(
             Icons.assignment_rounded,
+            color: mPrimaryColor,
             size: mFontSize,
           ),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -140,12 +157,13 @@ class _BodyState extends State<AccountScreen> {
           ),
           onTap: () {
           },
-        ),
-        Divider(),
+        ), // hướng dẫn
+        Divider(height: 20,color: Colors.blue[100],indent: 20,endIndent: 20),
         ListTile(
           dense: true,
           leading: const Icon(
             Icons.settings,
+            color: mPrimaryColor,
             size: mFontSize,
           ),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -154,14 +172,14 @@ class _BodyState extends State<AccountScreen> {
             child: const Text('Cài đặt', style: TextStyle(fontSize: mFontSize)),
           ),
           onTap: () {
-
           },
-        ),
-        Divider(),
+        ), // cài đặt
+        Divider(height: 20,color: Colors.blue[100],indent: 20,endIndent: 20),
         ListTile(
           dense: true,
           leading: const Icon(
             Icons.logout,
+            color: mPrimaryColor,
             size: mFontSize,
           ),
           visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
@@ -180,8 +198,8 @@ class _BodyState extends State<AccountScreen> {
               ),
             );
           },
-        ),
-        Divider(),
+        ), // đăng xuất
+        Divider(height: 20,color: Colors.blue[100],indent: 20,endIndent: 20),
       ],
     );
   }

@@ -18,7 +18,6 @@ class PointScreen extends StatefulWidget {
 
 class _PointScreenState extends State<PointScreen> {
   final PointBloc pointBloc = PointBloc();
-  final _repository = Repository();
 
   @override
   void initState() {
@@ -35,7 +34,7 @@ class _PointScreenState extends State<PointScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: mSecondaryColor,
+      backgroundColor: Colors.grey[50],
       body: StreamBuilder(
         stream: pointBloc.customerStatus,
         builder: (context, AsyncSnapshot<CustomerStatusModel> snapshot) {

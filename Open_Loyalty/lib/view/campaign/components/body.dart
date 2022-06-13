@@ -203,7 +203,7 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
         child: GradientCard(
           couponId: campaignModel.campaignId,
           name: campaignModel.name,
-          campaignActivity: "Chào mừng khách hàng mới",
+          campaignActivity: campaignModel.reward,
           costInPoints: campaignModel.costInPoints.toString(),
           startColor: Color(0xfffdfcfb),
           endColor: Color(0xffe2d1c3)
