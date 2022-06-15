@@ -6,6 +6,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:open_loyalty/Firebase/respository.dart';
 import 'package:open_loyalty/models/customer_model.dart';
 import 'package:open_loyalty/models/maintenance.dart';
+import 'package:open_loyalty/view/Schedule_Warranty/Check_warranty.dart';
+import 'package:open_loyalty/view/booking_management/Check_maintenance.dart';
 import 'package:open_loyalty/view/campaign/campaign_screen.dart';
 import 'package:open_loyalty/view/campaign/edit_voucher_screen.dart';
 import '../../constant.dart';
@@ -186,12 +188,12 @@ class _BodyState extends State<Body> {
                             decoration: BoxDecoration(
                                 gradient: const LinearGradient(colors: [
                                   //Colors.green[500]
-                                  Colors.lightGreenAccent,
+                                  //Colors.lightGreenAccent,
                                   Color(0xFF76FF03),
-                                  Color(0xFF64DD17),
-                                  Color(0xFF64DD17),
+                                  //Color(0xFF64DD17),
+                                  //Color(0xFF64DD17),
                                   Color(0xFF76FF03),
-                                  Colors.lightGreenAccent,
+                                  //Colors.lightGreenAccent,
                                 ]),
                                 borderRadius: BorderRadius.circular(12),
                                 border:
@@ -243,11 +245,11 @@ class _BodyState extends State<Body> {
                         height: 64,
                         decoration: BoxDecoration(
                             gradient: const LinearGradient(colors: [
-                              Color(0xFFFFCC80),
+                              //Color(0xFFFFCC80),
                               Colors.orange,
-                              Colors.deepOrangeAccent,
+                              //Colors.deepOrangeAccent,
                               Colors.orange,
-                              Color(0xFFFFCC80),
+                              //Color(0xFFFFCC80),
                             ]),
                             borderRadius: BorderRadius.circular(12),
                             border:
@@ -299,11 +301,12 @@ class _BodyState extends State<Body> {
                         height: 64,
                         decoration: BoxDecoration(
                             gradient: const LinearGradient(colors: [
-                              Color(0xFF81D4FA),
-                              Colors.lightBlue,
+                              //Color(0xFF81D4FA),
+                              //Colors.lightBlue,
                               Color(0xFF00B0FF),
-                              Colors.lightBlue,
-                              Color(0xFF81D4FA),
+                              Color(0xFF00B0FF),
+                              //Colors.lightBlue,
+                              //Color(0xFF81D4FA),
                             ]),
                             borderRadius: BorderRadius.circular(12),
                             border:
@@ -344,7 +347,7 @@ class _BodyState extends State<Body> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return GetMyStores();
+                              return FindWarrntyScreen();
                             },
                           ),
                         );
@@ -355,11 +358,11 @@ class _BodyState extends State<Body> {
                         height: 64,
                         decoration: BoxDecoration(
                             gradient: const LinearGradient(colors: [
-                              Color(0xFFE1BEE7),
+                              //Color(0xFFE1BEE7),
                               Colors.purpleAccent,
-                              Color(0xFFD500F9),
+                              //Color(0xFFD500F9),
                               Colors.purpleAccent,
-                              Color(0xFFE1BEE7),
+                              //Color(0xFFE1BEE7),
                             ]),
                             borderRadius: BorderRadius.circular(12),
                             border:
@@ -401,7 +404,7 @@ class _BodyState extends State<Body> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return GetMyStores();
+                              return FindMaintenanceScreen();
                             },
                           ),
                         );
@@ -412,11 +415,11 @@ class _BodyState extends State<Body> {
                         height: 64,
                         decoration: BoxDecoration(
                             gradient: const LinearGradient(colors: [
-                              Color(0xFFFFF9C4),
+                              //Color(0xFFFFF9C4),
                               Colors.yellowAccent,
-                              Color(0xFFFFEA00),
+                              //Color(0xFFFFEA00),
                               Colors.yellowAccent,
-                              Color(0xFFFFF9C4),
+                              //Color(0xFFFFF9C4),
                             ]),
                             borderRadius: BorderRadius.circular(12),
                             border:

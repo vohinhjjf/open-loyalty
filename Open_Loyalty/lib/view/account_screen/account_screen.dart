@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:open_loyalty/constant.dart';
 import 'package:open_loyalty/main.dart';
@@ -27,6 +28,8 @@ class Body extends StatefulWidget {
   _BodyState createState() => _BodyState();
 }
 class _BodyState extends State<Body> {
+  User? user = FirebaseAuth.instance.currentUser;
+
   @override
   void initState() {
     super.initState();
@@ -39,7 +42,63 @@ class _BodyState extends State<Body> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return user?.email == "admin@gmail.com"
+      ? ListView(
+      padding: EdgeInsets.only(top: space_height),
+      children: <Widget>[
+        ListTile(
+          dense: true,
+          leading: const Icon(
+            Icons.person,
+            color: mPrimaryColor,
+            size: mFontSize,
+          ),
+          visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+          title: Transform.translate(
+            offset: const Offset(-16, 0),
+            child: const Text('Thông tin tài khoản',
+                style: TextStyle(fontSize: mFontSize)),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return  AccountInfoScreen();
+                },
+              ),
+            );
+          },
+        ), //Tài khoản
+        Divider(height: 20,color: Colors.blue[100],indent: 20,endIndent: 20),
+        ListTile(
+          dense: true,
+          leading: const Icon(
+            Icons.logout,
+            color: mPrimaryColor,
+            size: mFontSize,
+          ),
+          visualDensity: const VisualDensity(horizontal: 0, vertical: -4),
+          title: Transform.translate(
+            offset: Offset(-16, 0),
+            child:
+            const Text('Đăng xuất', style: TextStyle(fontSize: mFontSize)),
+          ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) {
+                  return LoginScreen();
+                },
+              ),
+            );
+          },
+        ), // đăng xuất
+        Divider(height: 20,color: Colors.blue[100],indent: 20,endIndent: 20),
+      ],
+    )
+    : ListView(
       padding: EdgeInsets.only(top: space_height),
       children: <Widget>[
          ListTile(

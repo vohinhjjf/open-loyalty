@@ -17,13 +17,13 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
   late TabController _controller;
   int _selectedIndex = 0;
   List<Widget> list = [
-    Tab(
+    const Tab(
       child: Text(
         "Mới nhất",
         style: TextStyle(color: Colors.black, fontSize: subhead),
       ),
     ),
-    Tab(
+    const Tab(
       child: Text(
         "Đã đổi",
         style: TextStyle(color: Colors.black, fontSize: subhead),
@@ -123,10 +123,10 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                           SizedBox(
                             height: size.height * 0.2,
                           ),
-                          Text("Hiện tại không có khuyến mãi nào!",
+                          const Text("Hiện tại không có khuyến mãi nào!",
                               style: TextStyle(
                                   color: Colors.grey, fontSize: mFontSize)),
-                          SizedBox(
+                          const SizedBox(
                             height: 20.0,
                           ),
                           SvgPicture.asset(
@@ -155,9 +155,9 @@ class _BodyState extends State<Body> with SingleTickerProviderStateMixin {
                           SizedBox(
                             height: size.height * 0.2,
                           ),
-                          Padding(
+                          const Padding(
                             padding:
-                                const EdgeInsets.symmetric(horizontal: 40.0),
+                                EdgeInsets.symmetric(horizontal: 40.0),
                             child: Text(
                                 "Hãy dùng điểm để đổi lấy các khuyến mãi giá trị nào!",
                                 textAlign: TextAlign.center,

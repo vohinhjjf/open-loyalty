@@ -18,7 +18,7 @@ class CampaignBloc {
       String name,
       String campaignId,
       String reward,
-      double costInPoints) async {
+      int costInPoints) async {
     print("set customer campaign");
     return await _repository.addCustomerCampaign(name,campaignId,reward,costInPoints);
   }

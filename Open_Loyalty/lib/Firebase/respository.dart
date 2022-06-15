@@ -46,7 +46,7 @@ class Repository {
       String name,
       String campaignId,
       String reward,
-      double costInPoints) =>
+      int costInPoints) =>
       customerApiProvider.addCustomerCampaign(name,campaignId,reward,costInPoints);
 
   dynamic buyCoupon(String couponId, String costInPoints) =>
@@ -61,10 +61,17 @@ class Repository {
   Future<ListMaintenanceModel_1> fetchCustomerMaintenanceBooking() =>
       customerApiProvider.fetchCustomerMaintenanceBooking();
 
+  Future<MaintenanceModel_1> CheckMaintenanceBooking(String id) =>
+      customerApiProvider.CheckMaintenanceBooking(id);
+
   Future<ListWarrantyModel> fetchCustomerWarrantyBooking() =>
       customerApiProvider.fetchCustomerWarrantyBooking();
 
+  Future<WarrantyModel> CheckWarrantyBooking(String id) =>
+      customerApiProvider.CheckWarrantyBooking(id);
+
   Future<String?> bookingWarranty(
+      String warrantyId,
       String productSku,
       String warrantyCenter,
       DateTime bookingDate,
@@ -72,11 +79,12 @@ class Repository {
       DateTime createAt,
       ) async {
     final res = await CustomerApiProvider().bookingWarranty(
-        productSku, warrantyCenter, bookingDate, bookingTime, createAt);
+        warrantyId,productSku, warrantyCenter, bookingDate, bookingTime, createAt);
     return res;
   }
 
   Future<String?> booking(
+      String maintenanceId,
       String productSku,
       String warrantyCenter,
       DateTime bookingDate,
@@ -84,7 +92,7 @@ class Repository {
       DateTime createAt,
       ) async {
     final res = await CustomerApiProvider().booking(
-        productSku, warrantyCenter, bookingDate, bookingTime, createAt);
+        maintenanceId, productSku, warrantyCenter, bookingDate, bookingTime, createAt);
     return res;
   }
 

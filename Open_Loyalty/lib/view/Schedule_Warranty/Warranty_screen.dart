@@ -61,10 +61,10 @@ class _BodyState extends State<Body> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
-            Text(
+            const Text(
               "Vui lòng chọn thời gian đến",
               style: TextStyle(fontSize: subhead, color: Colors.grey),
             ),
@@ -83,7 +83,7 @@ class _BodyState extends State<Body> {
                   weekendStyle: dayStyle(FontWeight.normal),
                   selectedColor: mPrimaryColor,
                   todayColor: Colors.blue),
-              daysOfWeekStyle: DaysOfWeekStyle(
+              daysOfWeekStyle: const DaysOfWeekStyle(
                   weekdayStyle: TextStyle(
                       color: mPrimaryColor,
                       fontWeight: FontWeight.bold,
@@ -92,10 +92,10 @@ class _BodyState extends State<Body> {
                       color: Colors.black,
                       fontWeight: FontWeight.bold,
                       fontSize: footnote)),
-              headerStyle: HeaderStyle(
+              headerStyle: const HeaderStyle(
                   formatButtonVisible: false, centerHeaderTitle: true),
             ),
-            SizedBox(
+            const SizedBox(
               height: 5,
             ),
             Container(
@@ -104,7 +104,7 @@ class _BodyState extends State<Body> {
               decoration: BoxDecoration(
                   color: mLinear,
                   boxShadow: [Constants.cardShadow],
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topLeft: Radius.circular(56),
                       topRight: Radius.circular(56))),
               child: Column(
@@ -186,8 +186,8 @@ class _BodyState extends State<Body> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
+          const Padding(
+            padding: EdgeInsets.only(left: 16),
             child: Text(
               "Sáng ",
               style: TextStyle(fontSize: subhead, color: Colors.white),
@@ -208,8 +208,8 @@ class _BodyState extends State<Body> {
               label: (i, v) => v,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
+          const Padding(
+            padding: EdgeInsets.only(left: 16),
             child: Text(
               "Trưa ",
               style: TextStyle(fontSize: subhead, color: Colors.white),
@@ -230,8 +230,8 @@ class _BodyState extends State<Body> {
               label: (i, v) => v,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16),
+          const Padding(
+            padding: EdgeInsets.only(left: 16),
             child: Text(
               "Chiều ",
               style: TextStyle(fontSize: subhead, color: Colors.white),

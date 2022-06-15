@@ -60,7 +60,7 @@ class _WarrantyBookingManagementState extends State<WarrantyBookingManagement> {
           ),
           backgroundColor: Colors.white,
           centerTitle: true,
-          title: Text(
+          title: const Text(
             'Thông tin đăng ký bảo hành',
             style: TextStyle(
               fontSize: subhead,

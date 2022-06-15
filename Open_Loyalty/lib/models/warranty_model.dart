@@ -7,7 +7,7 @@ class ListWarrantyModel {
 }
 
 class WarrantyModel {
-  late String maintenanceId;
+  late String warrantyId;
   late String productSku;
   late DateTime bookingDate;
   late String bookingTime;

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:open_loyalty/components/coupon_card.dart';
 import 'package:open_loyalty/components/gradient_card.dart';
 import 'package:open_loyalty/constant.dart';
@@ -25,7 +26,38 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
   var name = TextEditingController();
   var reward = TextEditingController();
   var costInPoints = TextEditingController();
-  int? _value = 1,_content = 1;
+  late String _value, _content;
+  // Initial Selected Value
+  String dropdownvalue = 'Khuyến mãi 5%';
+  // List of items in our dropdown menu
+  var items_value = [
+    'Khuyến mãi 5%',
+    'Khuyến mãi 10%',
+    'Khuyến mãi 15%',
+    'Khuyến mãi 20%',
+  ];
+  String dropdowncontent = 'United Kingdom';
+  // List of items in our dropdown menu
+  var items_content = [
+    'Chào mừng khách hàng mới',
+    'Tri ân khách hàng',
+    'Khuyến mãi hàng tháng',
+  ];
+  String? GetValue(){
+    return this.dropdownvalue = dropdownvalue;
+  }
+
+  SetValue(String value){
+    this.dropdownvalue = value;
+  }
+
+  String? GetContent(){
+    return this.dropdowncontent = dropdowncontent;
+  }
+
+  SetContent(String content){
+    this.dropdowncontent = content;
+  }
 
   @override
   void initState() {
@@ -85,7 +117,7 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
                     SizedBox(
                       height: size.height * 0.2,
                     ),
-                    Text("Hiện tại không có khuyến mãi nào!",
+                    const Text("Hiện tại không có khuyến mãi nào!",
                         style: TextStyle(
                             color: Colors.grey, fontSize: mFontSize)),
                     SizedBox(
@@ -112,14 +144,6 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
             color: mPrimaryColor,
             child: IconButton(
               onPressed: () {
-                /*Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) {
-                      return AddVoucher();
-                    },
-                  ),
-                );*/
                 _showAddDialog();
               },
               icon: const Icon(
@@ -176,6 +200,7 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
   }
 
   _showAddDialog() {
+
     showDialog(
         context: context,
         builder: (_) => AlertDialog(
@@ -205,30 +230,33 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
                               size: body
                             ),
                             DropdownButton(
-                                value: _value,
-                                items: const [
+                                value: dropdownvalue.isNotEmpty? dropdownvalue : null,
+                                items: const [ //add items in the dropdown
                                   DropdownMenuItem(
                                     child: Text("Khuyến mãi 5%"),
-                                    value: 1,
+                                    value: "Khuyến mãi 5%",
                                   ),
                                   DropdownMenuItem(
-                                    child: Text("Khuyến mãi 10%"),
-                                    value: 2,
+                                      child: Text("Khuyến mãi 10%"),
+                                      value: "Khuyến mãi 10%"
                                   ),
                                   DropdownMenuItem(
-                                    child: Text("Khuyến mãi 15%"),
-                                    value: 3,
+                                      child: Text("Khuyến mãi 15%"),
+                                      value: "Khuyến mãi 15%"
                                   ),
                                   DropdownMenuItem(
                                     child: Text("Khuyến mãi 20%"),
-                                    value: 4,
+                                    value: "Khuyến mãi 20%",
                                   )
-                                ],
 
-                                onChanged: (int? value) {
+                                ],
+                                onChanged: (String? value) {
                                   setState(() {
-                                    _value = value;
+                                    dropdownvalue = value!;
+                                    SetValue(dropdownvalue);
                                   });
+                                  Navigator.of(context).pop();
+                                  _showAddDialog();
                                 },
                                 hint:Text("Chọn loại khuyến mãi")
                             )
@@ -245,32 +273,30 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
                               size: body,
                             ),
                             DropdownButton(
-                                value: _content,
-                                items: const [
+                                value: dropdowncontent.isNotEmpty? dropdowncontent:null,
+                                items: const [ //add items in the dropdown
                                   DropdownMenuItem(
-                                    child: Text("Chào mừng khách hàng mới"),
-                                    value: 1,
+                                    child: Text("United Kingdom"),
+                                    value: "United Kingdom",
                                   ),
                                   DropdownMenuItem(
-                                    child: Text("Tri ân khách hàng thân thiết"),
-                                    value: 2,
+                                      child: Text("Canada"),
+                                      value: "Canada"
                                   ),
                                   DropdownMenuItem(
-                                    child: Text("Sale ngày 16.6"),
-                                    value: 3,
-                                  ),
-                                  DropdownMenuItem(
-                                    child: Text("Khuyến mãi thường niên"),
-                                    value: 4,
+                                    child: Text("Russia"),
+                                    value: "Russia",
                                   )
                                 ],
-
-                                onChanged: (int? value) {
+                                hint:Text("Chọn loại khuyến mãi"),
+                              onChanged: (String? value) {
                                   setState(() {
-                                    _value = value;
+                                    dropdowncontent = value!;
+                                    SetContent(dropdowncontent);
                                   });
-                                },
-                                hint:Text("Chọn loại khuyến mãi")
+                                  Navigator.of(context).pop();
+                                  _showAddDialog();
+                              },
                             )
                           ],
                         ),
@@ -309,23 +335,12 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
                   onTap: (){
                     if(_formKey.currentState!.validate()){
                       EasyLoading.show(status: 'Đang cập nhật dữ liệu...');
-                      switch (_value) {
-                        case 1: {name.text = "Khuyến mãi 5%"; break;}
-                        case 2: {name.text = "Khuyến mãi 10%"; break;}
-                        case 3: {name.text = "Khuyến mãi 15%"; break;}
-                        default: {name.text = "Khuyến mãi 20%"; break;}
-                      }
-                      switch (_content) {
-                        case 1: {reward.text = "Chào mừng khách hàng mới"; break;}
-                        case 2: {reward.text = "Tri ân khách hàng thân thiết"; break;}
-                        case 3: {reward.text = "Sale ngày 16.6"; break;}
-                        default: {reward.text = "Khuyến mãi thường niên"; break;}
-                      }
                       FirebaseFirestore.instance.collection('Campaign').doc("available")
                           .collection("available").get().then((value) =>
-                          campaignBloc.addCustomerCampaign(name.text, value.size.toString(), reward.text, double.parse(costInPoints.text)).then((value){
+                          campaignBloc.addCustomerCampaign(name.text, value.size.toString(), reward.text, int.parse(costInPoints.text)).then((value){
                             EasyLoading.showSuccess('Thêm thành công');
-                            Navigator.pop(context);
+                            Navigator.of(context).pushNamedAndRemoveUntil(
+                                "/home", (Route<dynamic> route) => false);
                           }));
                     }
                   },
@@ -335,7 +350,7 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
                     decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(28) //
                         ),
-                        gradient: const LinearGradient(colors: [
+                        gradient: LinearGradient(colors: [
                           mHighColor,
                           Colors.lightBlue,
                           Colors.lightBlueAccent

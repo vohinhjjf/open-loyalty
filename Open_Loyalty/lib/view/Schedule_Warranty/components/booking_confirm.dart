@@ -4,10 +4,11 @@ import 'package:open_loyalty/Firebase/respository.dart';
 
 import 'package:open_loyalty/constant.dart';
 import 'package:open_loyalty/models/product_model.dart';
-import 'package:open_loyalty/models/warranty_model.dart';
 import 'package:open_loyalty/view/booking_management/MaintenanceBookingManagement.dart';
 import 'package:open_loyalty/view/Schedule_Warranty/WarrantyBookingScreen.dart';
 import 'package:open_loyalty/view/Schedule_Warranty/components/warranty_center.dart';
+
+import 'dart:math';
 
 class BookingConfirmed extends StatefulWidget {
   final DateTime _bookingDate;
@@ -22,6 +23,21 @@ class BookingConfirmed extends StatefulWidget {
 
 class _BookingConfirmedState extends State<BookingConfirmed> {
   final _repository = Repository();
+
+  String random(){
+    final max = 99999;
+    final random = new Random();
+    final value = random.nextInt(max);
+    String str;
+    if(value <10){
+      str = "0000$value";
+    }
+    else if(value <100){ str = "000$value";}
+    else if(value < 1000){ str = "00$value";}
+    else if(value <10000){ str = "0$value";}
+    else { str = "$value"; }
+    return str;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +96,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                           if (widget._center != null) {
                             print('thành công');
                             _repository.bookingWarranty(
+                                    random(),
                                     widget.product.productSku,
                                     widget._center,
                                     widget._bookingDate,
@@ -102,6 +119,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                             print(widget._bookingDate);
                             print(widget._time);
                             _repository.booking(
+                                    random(),
                                     widget.product.productSku,
                                     widget._center,
                                     widget._bookingDate,
@@ -132,25 +150,23 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
   _showMaterialDialog() {
     showDialog(
         context: context,
-        builder: (_) => new AlertDialog(
+        builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25.0),
               ),
               title: new Image(
                 width: 130,
                 height: 130,
-                image: AssetImage("assets/images/success.gif"),
+                image: const AssetImage("assets/images/success.gif"),
               ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Container(
-                    child: Text(
-                      "Thông tin đăng kí của bạn đã được lưu lại!",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.black, fontWeight: FontWeight.w500),
-                    ),
+                  const Text(
+                    "Thông tin đăng kí của bạn đã được lưu lại!",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.black, fontWeight: FontWeight.w500),
                   ),
                   SizedBox(
                     height: 20.0,
@@ -159,7 +175,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         FlatButton(
-                            child: Text('Quay lại',
+                            child: const Text('Quay lại',
                                 style: TextStyle(
                                     color: mPrimaryColor, fontSize: 15)),
                             onPressed: () {
@@ -170,7 +186,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                                 borderRadius: BorderRadius.circular(10.0),
                                 side: BorderSide(color: mPrimaryColor)),
                             color: mPrimaryColor,
-                            child: Text('Xem chi tiết',
+                            child: const Text('Xem chi tiết',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15)),
                             onPressed: () {
@@ -206,32 +222,32 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
   _showErrorDialog() {
     showDialog(
         context: context,
-        builder: (_) => new AlertDialog(
+        builder: (_) => AlertDialog(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25.0),
               ),
               title: Container(
                 child: Column(
                   children: [
-                    Image(
+                    const Image(
                       width: 250,
                       height: 250,
                       image: AssetImage("assets/images/error.gif"),
                     ),
-                    Text(
+                    const Text(
                       "Đăng ký không thành công",
                       style: TextStyle(fontSize: mFontSize, color: Colors.red),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    Text(
+                    const Text(
                       "Bạn vui lòng kiểm tra lại thông tin đăng kí nhé!",
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(color: Colors.black, fontSize: mFontSize),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     RaisedButton(
@@ -239,7 +255,7 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
                             borderRadius: BorderRadius.circular(10.0),
                             side: BorderSide(color: mPrimaryColor)),
                         color: mPrimaryColor,
-                        child: Text('Quay lại',
+                        child: const Text('Quay lại',
                             style:
                                 TextStyle(color: Colors.white, fontSize: 15)),
                         onPressed: () {
@@ -253,14 +269,14 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
 
   Widget time() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(color: Colors.white),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: const [
               Text(
                 "Ngày dự kiến: ",
                 style: TextStyle(fontSize: subhead, color: Colors.grey),
@@ -307,12 +323,12 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text(
+              const Text(
                 "Chọn trung tâm bảo hành",
                 style: TextStyle(fontSize: subhead, color: mPrimaryColor),
               ),
               IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.arrow_forward_ios_rounded,
                     color: mPrimaryColor,
                     size: subhead,
@@ -347,27 +363,27 @@ class _BookingConfirmedState extends State<BookingConfirmed> {
 
   Widget info() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-      decoration: BoxDecoration(color: Colors.white),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+      decoration: const BoxDecoration(color: Colors.white),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: [
+            children: const [
               Text(
                 "Tên sản phẩm: ",
                 style: TextStyle(fontSize: subhead, color: Colors.grey),
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: space_height * 2,
           ),
           Row(
             children: [
               Text(
                 widget.product.productName,
-                style: TextStyle(fontSize: subhead),
+                style: const TextStyle(fontSize: subhead),
               )
             ],
           )

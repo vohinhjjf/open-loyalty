@@ -39,26 +39,6 @@ class CustomerApiProvider {
       FirebaseFirestore.instance.collection('Products').doc(id).set({});
       //point.doc(id).set({});
       setCustomerPointTransfer(10.0, 'newuser', 'adding', id);
-      campaign.doc(id).collection("available").add({
-        "name": 'Inactive',
-        "campaignId": '0' + '23456789',
-        "reward": 'reward',
-        "active": true,
-        "costInPoints": 0,
-        "singleCoupon": true,
-        "unlimited": true,
-        "limit": 0,
-        "limitPerUser": 0,
-        "daysInactive": 0,
-        "daysValid": 0,
-        "featured": true,
-        "public": true,
-        "usageLeft": 0,
-        "usageLeftForCustomer": 0,
-        "canBeBoughtByCustomer": true,
-        "visibleForCustomersCount": 0,
-        "usersWhoUsedThisCampaignCount": 0,
-      });
     }
     // Call the user's CollectionReference to add a new user
     return users
@@ -274,6 +254,7 @@ class CustomerApiProvider {
       return customer.doc(user?.uid).update(upate_point);
     }
   }
+
   Future<void> UpdatePointReceiver(String comment, double points) async{
     final list_id = <String>[];
     var id_receiver, phone;
@@ -342,7 +323,7 @@ class CustomerApiProvider {
   //fetch customer campaign
   Future<ListCampaignModel?> fetchCustomerCampaign() async {
     List<CampaignModel> _newList = [];
-    QuerySnapshot snapshot = await campaign.doc(user?.uid).collection("available").get();
+    QuerySnapshot snapshot = await campaign.doc("available").collection("available").get();
     snapshot.docs.forEach((doc) {
       if(!_newList.contains(doc.data())){
         CampaignModel couponModel = new CampaignModel(doc.data());
@@ -357,10 +338,10 @@ class CustomerApiProvider {
       String name,
       String campaignId,
       String reward,
-      double costInPoints) async {
+      int costInPoints) async {
     print('available');
     var id = user?.uid;
-    final select = await campaign.doc(id).collection("available").get();
+    final select = await campaign.doc("available").collection("available").get();
     var i = select.size;
     var available_data = {
       "name": name,
@@ -382,7 +363,7 @@ class CustomerApiProvider {
       "visibleForCustomersCount": i,
       "usersWhoUsedThisCampaignCount":i,
     };
-    return campaign.doc(id).collection("available").add(
+    return campaign.doc("available").collection("available").add(
         available_data)
         .then((value) => print("Points Update"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -404,7 +385,6 @@ class CustomerApiProvider {
   }
   //buy coupon(campaign)
   dynamic buyCoupon(String couponId, String costInPoints) async {
-    print("entered");
     var id = user?.uid;
     String dateStart = '22-04-2021 05:57:58 PM';
     DateFormat inputFormat = DateFormat('dd-MM-yyyy hh:mm:ss a');
@@ -466,6 +446,74 @@ class CustomerApiProvider {
     }
     return ListMaintenanceModel_1(maintenanceModels: temp, total: temp.length);
   }
+
+  Future<String?> booking(
+      String maintenanceId,
+      String productSku,
+      String warrantyCenter,
+      DateTime bookingDate,
+      String bookingTime,
+      DateTime createAt,
+      ) async {
+    final select = await maintenance.doc(user?.uid).get();
+    if (select.exists) {
+      Map<String, dynamic> data_select = select.data()!;
+      var i = data_select.length;
+      var maintenance_data = {
+        "maintenance $i": {
+          "id": "BT$maintenanceId",
+          "productSku": productSku,
+          "bookingDate": bookingDate.toIso8601String(),
+          "bookingTime": bookingTime,
+          "warrantyCenter": warrantyCenter,
+          "createdAt": createAt.toIso8601String(),
+          "description": "test",
+          "cost": "1.000.000",
+          "paymentStatus": "unpaid",
+          "active": true
+        }
+      };
+      maintenance.doc(user?.uid).update(
+          maintenance_data)
+          .then((value) => print("Maintenance Update"))
+          .catchError((error) => print("Failed to add user: $error"));
+      return 'succes';
+    }
+  }
+
+  Future<MaintenanceModel_1> CheckMaintenanceBooking(String id) async {
+    var docSnapshot = await maintenance.get();
+    MaintenanceModel_1 trans = new MaintenanceModel_1();
+    trans.maintenanceId = "";
+    List<String> _ListID = [];
+    docSnapshot.docs.forEach((doc) {
+      _ListID.add(doc.id);
+    });
+    for (int j = 0; j < _ListID.length; j++) {
+      final snapshoot = await maintenance.doc(_ListID[j]).get();
+      if (snapshoot.exists) {
+        Map<String, dynamic> data = snapshoot.data()!;
+        var length = data.length;
+        for (int i = 0; i < length; i++) {
+          if (data['maintenance $i']['id'] == id) {
+            trans.maintenanceId = data['maintenance $i']['id'];
+            trans.productSku = data['maintenance $i']['productSku'];
+            trans.bookingDate =
+                DateTime.parse(data['maintenance $i']['bookingDate']).toLocal();
+            trans.bookingTime = data['maintenance $i']['bookingTime'];
+            trans.warrantyCenter = data['maintenance $i']['warrantyCenter'];
+            trans.createdAt = DateTime.parse(data['maintenance $i']['createdAt']);
+            trans.active = data['maintenance $i']['active'];
+            trans.discription = data['maintenance $i']['description'];
+            trans.cost = data['maintenance $i']['cost'];
+            trans.paymentStatus = data['maintenance $i']['paymentStatus'];
+          }
+        }
+      }
+    }
+    return trans;
+  }
+
   //Warranty
   Future<ListWarrantyModel> fetchCustomerWarrantyBooking() async {
     var docSnapshot = await warranty.doc(user?.uid).get();
@@ -475,7 +523,7 @@ class CustomerApiProvider {
       var length = data.length;
       for(int i = 0; i< length; i++) {
         WarrantyModel trans =new WarrantyModel();
-        trans.maintenanceId = "$i";
+        trans.warrantyId = data['warranty $i']['id'];
         trans.productSku = data['warranty $i']['productSku'];
         trans.bookingDate = DateTime.parse(data['warranty $i']['bookingDate']).toLocal();
         trans.bookingTime = data['warranty $i']['bookingTime'];
@@ -493,6 +541,7 @@ class CustomerApiProvider {
   }
 
   Future<String?> bookingWarranty(
+      String warrantyId,
       String productSku,
       String warrantyCenter,
       DateTime bookingDate,
@@ -505,6 +554,7 @@ class CustomerApiProvider {
       var i = data_select.length;
       var warranty_data = {
         "warranty $i": {
+          "id": "BH$warrantyId",
           "productSku": productSku,
           "bookingDate": bookingDate.toIso8601String(),
           "bookingTime": bookingTime,
@@ -524,36 +574,37 @@ class CustomerApiProvider {
     }
   }
 
-  Future<String?> booking(
-      String productSku,
-      String warrantyCenter,
-      DateTime bookingDate,
-      String bookingTime,
-      DateTime createAt,
-      ) async {
-    final select = await maintenance.doc(user?.uid).get();
-    if (select.exists) {
-      Map<String, dynamic> data_select = select.data()!;
-      var i = data_select.length;
-      var maintenance_data = {
-        "maintenance $i": {
-          "productSku": productSku,
-          "bookingDate": bookingDate.toIso8601String(),
-          "bookingTime": bookingTime,
-          "warrantyCenter": warrantyCenter,
-          "createdAt": createAt.toIso8601String(),
-          "description": "test",
-          "cost": "1.000.000",
-          "paymentStatus": "unpaid",
-          "active": true
+  Future<WarrantyModel> CheckWarrantyBooking(String id) async {
+    var docSnapshot = await warranty.get();
+    WarrantyModel trans = new WarrantyModel();
+    trans.warrantyId = "";
+    List<String> _ListID = [];
+    docSnapshot.docs.forEach((doc) {
+      _ListID.add(doc.id);
+    });
+    for (int j = 0; j < _ListID.length; j++) {
+      final snapshoot = await warranty.doc(_ListID[j]).get();
+      if (snapshoot.exists) {
+        Map<String, dynamic> data = snapshoot.data()!;
+        var length = data.length;
+        for (int i = 0; i < length; i++) {
+          if (data['warranty $i']['id'] == id) {
+            trans.warrantyId = data['warranty $i']['id'];
+            trans.productSku = data['warranty $i']['productSku'];
+            trans.bookingDate =
+                DateTime.parse(data['warranty $i']['bookingDate']).toLocal();
+            trans.bookingTime = data['warranty $i']['bookingTime'];
+            trans.warrantyCenter = data['warranty $i']['warrantyCenter'];
+            trans.createdAt = DateTime.parse(data['warranty $i']['createdAt']);
+            trans.active = data['warranty $i']['active'];
+            trans.discription = data['warranty $i']['description'];
+            trans.cost = data['warranty $i']['cost'];
+            trans.paymentStatus = data['warranty $i']['paymentStatus'];
+          }
         }
-      };
-      maintenance.doc(user?.uid).update(
-          maintenance_data)
-          .then((value) => print("Maintenance Update"))
-          .catchError((error) => print("Failed to add user: $error"));
-      return 'succes';
+      }
     }
+    return trans;
   }
 
   //Request Support
