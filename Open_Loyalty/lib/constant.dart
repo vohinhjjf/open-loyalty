@@ -61,3 +61,24 @@ class Constants {
   static final TextStyle contentProductDetail =
   TextStyle(fontSize: footnote, color: Colors.black);
 }
+
+class FirestoreConstants {
+  static const pathUserCollection = "Users";
+  static const pathMessageCollection = "messages";
+  static const name = "name";
+  static const id = "id";
+  static const email = "email";
+  static const chattingWith = "chattingWith";
+  static const idFrom = "idFrom";
+  static const idTo = "idTo";
+  static const timestamp = "timestamp";
+  static const content = "content";
+  static const type = "type";
+}
+
+class ColorConstants {
+  static const themeColor = Color(0xfff5a623);
+  static const primaryColor = Color(0xff203152);
+  static const greyColor = Color(0xffaeaeae);
+  static const greyColor2 = Color(0xffE8E8E8);
+}

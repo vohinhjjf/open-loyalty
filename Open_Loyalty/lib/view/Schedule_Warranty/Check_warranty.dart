@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:open_loyalty/constant.dart';
 import 'package:open_loyalty/models/chat/chat_message_model.dart';
-import 'package:open_loyalty/view/support/supporting_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -173,7 +172,7 @@ class _FindWarrntyScreenState extends State<FindWarrntyScreen> {
           ),
         )
         : Container(
-          padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+          padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
           child: Column(children: [
             Text(
               'Phiếu bảo trì ${warrantyModel.warrantyId}',
@@ -264,6 +263,20 @@ class _FindWarrntyScreenState extends State<FindWarrntyScreen> {
                 )
               ],
             ),
+            SizedBox(
+              height: 15,
+            ),
+            RaisedButton(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(color: mPrimaryColor)),
+                color: mPrimaryColor,
+                child: const Text('Quay lại',
+                    style:
+                    TextStyle(color: Colors.white, fontSize: 15)),
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                })
           ])
       );
   }

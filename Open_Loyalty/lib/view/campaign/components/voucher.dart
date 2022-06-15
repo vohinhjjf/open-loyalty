@@ -23,26 +23,10 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
   CouponBloc couponBloc = CouponBloc();
 
   final _formKey = GlobalKey<FormState>();
-  var name = TextEditingController();
-  var reward = TextEditingController();
   var costInPoints = TextEditingController();
-  late String _value, _content;
   // Initial Selected Value
   String dropdownvalue = 'Khuyến mãi 5%';
-  // List of items in our dropdown menu
-  var items_value = [
-    'Khuyến mãi 5%',
-    'Khuyến mãi 10%',
-    'Khuyến mãi 15%',
-    'Khuyến mãi 20%',
-  ];
-  String dropdowncontent = 'United Kingdom';
-  // List of items in our dropdown menu
-  var items_content = [
-    'Chào mừng khách hàng mới',
-    'Tri ân khách hàng',
-    'Khuyến mãi hàng tháng',
-  ];
+  String dropdowncontent = 'Chào mừng bạn mới';
   String? GetValue(){
     return this.dropdownvalue = dropdownvalue;
   }
@@ -66,12 +50,6 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
     couponBloc.fetchCustomerCoupon();
   }
 
-  // @override
-  // void didChangeDependencies() {
-  //   print("heleo");
-  //   campaignBloc.fetchCustomerCampaign();
-  //   super.didChangeDependencies();
-  // }
 
   @override
   void dispose() {
@@ -276,16 +254,16 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
                                 value: dropdowncontent.isNotEmpty? dropdowncontent:null,
                                 items: const [ //add items in the dropdown
                                   DropdownMenuItem(
-                                    child: Text("United Kingdom"),
-                                    value: "United Kingdom",
+                                    child: Text("Chào mừng bạn mới"),
+                                    value: "Chào mừng bạn mới",
                                   ),
                                   DropdownMenuItem(
-                                      child: Text("Canada"),
-                                      value: "Canada"
+                                      child: Text("Tri ân khách hàng thân thiết"),
+                                      value: "Tri ân khách hàng thân thiết"
                                   ),
                                   DropdownMenuItem(
-                                    child: Text("Russia"),
-                                    value: "Russia",
+                                    child: Text("Khuyến mãi hàng tháng"),
+                                    value: "Khuyến mãi hàng tháng",
                                   )
                                 ],
                                 hint:Text("Chọn loại khuyến mãi"),
@@ -337,7 +315,7 @@ class _BodyState extends State<Voucher> with SingleTickerProviderStateMixin {
                       EasyLoading.show(status: 'Đang cập nhật dữ liệu...');
                       FirebaseFirestore.instance.collection('Campaign').doc("available")
                           .collection("available").get().then((value) =>
-                          campaignBloc.addCustomerCampaign(name.text, value.size.toString(), reward.text, int.parse(costInPoints.text)).then((value){
+                          campaignBloc.addCustomerCampaign(GetValue()!, value.size.toString(), GetContent()!, int.parse(costInPoints.text)).then((value){
                             EasyLoading.showSuccess('Thêm thành công');
                             Navigator.of(context).pushNamedAndRemoveUntil(
                                 "/home", (Route<dynamic> route) => false);
