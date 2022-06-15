@@ -90,7 +90,18 @@ class CustomerApiProvider {
 
       // You can then retrieve the value from Firebase like this:
 
-      CustomerModel customerModel = new CustomerModel();
+       CustomerModel customerModel = new CustomerModel(
+          id: '',
+          name: '',
+          phone: '',
+          email: '',
+          birthday: '',
+          gender: '',
+          location: '',
+          cmd: '',
+          nationality: '',
+          loyaltyCardNumber: '',
+          levelId: '');
       customerModel.id = data['information']['id'];
       customerModel.name = data['information']['name'];
       customerModel.gender = data['information']['sex'];

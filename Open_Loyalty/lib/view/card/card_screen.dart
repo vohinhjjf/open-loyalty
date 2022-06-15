@@ -14,7 +14,9 @@ import '../../constant.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import '../product/product_screen.dart';
 import '../stores/stores_screen.dart';
-import '../support/start_conversation_screen.dart';
+import '../support/ChatScreen.dart';
+import '../support/MessagesPage.dart';
+
 
 class CardScreen extends StatefulWidget {
   @override
@@ -177,7 +179,7 @@ class _BodyState extends State<Body> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return StartConverstionScreen();
+                                  return MessagesPage();
                                 },
                               ),
                             );
@@ -522,7 +524,16 @@ class _BodyState extends State<Body> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) {
-                                  return StartConverstionScreen();
+                                  return ChatPage(
+                                          arguments: ChatPageArguments(
+                                            peerId:
+                                                'yfoznXChE5hB3ZWlW26Lq7dVnyn1',
+                                            peerAvatar:
+                                                'https://cdn-icons-png.flaticon.com/512/1177/1177568.png?w=360',
+                                            peerNickname: 'Admin',
+                                          ),
+                                        );
+                                        ;
                                 },
                               ),
                             );

@@ -1,82 +1,42 @@
-import 'package:flutter/foundation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:open_loyalty/constant.dart';
 
-class ChatMessageModel {
-  late String conversationId;
-  late String senderId;
-  late String senderName;
-  late String message;
-  late String messageTimestamp;
+class MessageChat {
+  String idFrom;
+  String idTo;
+  String timestamp;
+  String content;
+  int type;
 
-  ChatMessageModel(
-      {
-        required this.conversationId,
-        required this.message,
-        required this.messageTimestamp,
-        required this.senderId,
-        required this.senderName
-      });
-
-  ChatMessageModel.fromJson(Map<String, dynamic> json) {
-    conversationId = json['conversationId'];
-    senderId = json['senderId'];
-    senderName = json['senderName'];
-    message = json['message'];
-    messageTimestamp = json['messageTimestamp'];
-  }
+  MessageChat({
+    required this.idFrom,
+    required this.idTo,
+    required this.timestamp,
+    required this.content,
+    required this.type,
+  });
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['conversationId'] = this.conversationId;
-    data['senderId'] = this.senderId;
-    data['senderName'] = this.senderName;
-    data['message'] = this.message;
-    data['messageTimestamp'] = this.messageTimestamp;
-
-    return data;
-  }
-}
-
-class ChatMessageSocketModel {
-  late String userId;
-  late String customerId;
-  late String messId;
-  late String type;
-  late String from;
-  late String text;
-  //String filePath;
-
-  ChatMessageSocketModel(
-      {
-        required this.customerId,
-        required this.userId,
-        required this.messId,
-        required this.type,
-        required this.from});
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['userId'] = this.userId;
-    data['customerId'] = this.customerId;
-    data['messId'] = this.messId;
-    data['type'] = this.type;
-
-    return data;
+    return {
+      FirestoreConstants.idFrom: this.idFrom,
+      FirestoreConstants.idTo: this.idTo,
+      FirestoreConstants.timestamp: this.timestamp,
+      FirestoreConstants.content: this.content,
+      FirestoreConstants.type: this.type,
+    };
   }
 
-  ChatMessageSocketModel.fromJson(Map<String, dynamic> json) {
-    userId = json['userId'];
-    customerId = json['customerId'];
-    messId = json['messId'];
-    type = json['type'];
-    from = json['from'];
-  }
-}
-
-class MessId {
-  late String messId;
-  MessId({required this.messId});
-
-  MessId.fromJson(Map<String, dynamic> json) {
-    messId = json['messageId'];
+  factory MessageChat.fromDocument(DocumentSnapshot doc) {
+    String idFrom = doc.get(FirestoreConstants.idFrom);
+    String idTo = doc.get(FirestoreConstants.idTo);
+    String timestamp = doc.get(FirestoreConstants.timestamp);
+    String content = doc.get(FirestoreConstants.content);
+    int type = doc.get(FirestoreConstants.type);
+    return MessageChat(
+        idFrom: idFrom,
+        idTo: idTo,
+        timestamp: timestamp,
+        content: content,
+        type: type);
   }
 }
